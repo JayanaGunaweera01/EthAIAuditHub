@@ -4,7 +4,7 @@
 This repository contains a comprehensive Automated Auditing Framework for AI systems, designed to ensure transparency, fairness, and accountability in the development and deployment of AI models.
 
 ## Stakeholder Involvement
-Engage with key stakeholders, including developers, data scientists, legal experts, and end-users. Maintain open communication channels to gather feedback and ensure a collaborative approach.
+Engage with key stakeholders, including developers, data scientists, legal experts, and end-users. Maintain open communication channels to gather feedback and ensure a collaborative approach via a web app.
 
 ## Legal and Ethical Compliance
 Align the framework with relevant legal and ethical standards, emphasizing principles such as fairness, transparency, and accountability.
