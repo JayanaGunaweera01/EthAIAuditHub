@@ -1,4 +1,4 @@
-# Automated Auditing Framework for AI Systems
+# EthAIAuditHub- An Automated Auditing Framework for AI Systems With Stakeholder Analysis Feature
 
 ## Objective
 This repository contains a comprehensive Automated Auditing Framework for AI systems, designed to ensure transparency, fairness, and accountability in the development and deployment of AI models.
