@@ -78,37 +78,41 @@ jobs:
               cd  /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples
               ls -a
         
-      - name: Jupyter Notebook Execution
+      - name: Execute Jupyter Notebook
         run: |
-              pwd
-              cd  /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples
-              pwd
-               # Install nbconvert
-              pip install nbconvert
-    
-              # Execute the Jupyter notebook and save the output to a new notebook
-              jupyter nbconvert --to notebook --execute /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/tutorial_credit_scoring.ipynb --output /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/output_notebook.ipynb
-
-              # Print the contents of the executed notebook
-              cat /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/output_notebook.ipynb
-
-      - name: Commit files
-        run:
+           pwd
+           cd  /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples
+           pwd
+            # Install nbconvert
+            pip install nbconvert
+            
+            # Execute the Jupyter notebook and save the output to a new notebook
+            jupyter nbconvert --to notebook --execute /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/tutorial_credit_scoring.ipynb --output /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/output_notebook.ipynb
+        
+            # Print the contents of the executed notebook
+            cat /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/output_notebook.ipynb
+        
+      # Add a new step to commit and push the changes
+      - name: Commit and Push Changes
+        run: |
           git config --local user.name actions-user
-
           git config --local user.email "actions@github.com"
-
-          git add *
-
-          git commit -am "Audit Report $(date)"
-
-          git push origin main
+      
+          # Add only the necessary file(s) to the commit
+          git add /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/output_notebook.ipynb
+      
+          # Amend the commit message if needed
+          git commit --amend -m "Audit Report $(date)"
+      
+          # Force push the changes
+          git push origin main -f
+          shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
 
         env:
           REPO_KEY: ${{secrets.ETHAI_AUDIT_HUB_GITHUB_TOKEN}}
 
           username: github-actions
-        shell: bash 
+          shell: bash 
 
       
   build-r:
