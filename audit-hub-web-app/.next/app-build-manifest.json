@@ -1,0 +1,45 @@
+{
+  "pages": {
+    "/(root)/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(root)/layout.css",
+      "static/chunks/app/(root)/layout.js"
+    ],
+    "/(root)/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(root)/page.js"
+    ],
+    "/(root)/search/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(root)/search/page.js"
+    ],
+    "/(root)/activity/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(root)/activity/page.js"
+    ],
+    "/(root)/create-audit/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(root)/create-audit/page.js"
+    ],
+    "/(root)/profile/[id]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(root)/profile/[id]/page.js"
+    ],
+    "/(root)/communities/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(root)/communities/page.js"
+    ],
+    "/(root)/profile/edit/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(root)/profile/edit/page.js"
+    ]
+  }
+}
