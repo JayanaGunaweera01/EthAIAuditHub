@@ -26,6 +26,8 @@ jobs:
     env:
       UCI_DB: "https://archive.ics.uci.edu/ml/machine-learning-databases"
       PROPUBLICA_GH: "https://raw.githubusercontent.com/propublica/compas-analysis/bafff5da3f2e45eca6c2d5055faad269defd135a"
+      REPO_KEY: ${{secrets.ETHAI_AUDIT_HUB_GITHUB_TOKEN}}
+      username: github-actions
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -107,13 +109,7 @@ jobs:
           # Force push the changes
           git push origin main -f
           shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
-
-        env:
-          REPO_KEY: ${{secrets.ETHAI_AUDIT_HUB_GITHUB_TOKEN}}
-
-          username: github-actions
-          shell: bash 
-
+          
       
   build-r:
     runs-on: ubuntu-latest
