@@ -81,9 +81,8 @@ jobs:
       - name: Jupyter Notebook Execution
         run: |
               pwd
-              echo "path is: pwd"
               cd  /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples
-              ls-a
+              pwd
               jupyter execute tutorial_credit_scoring.ipynb
         shell: bash 
 
