@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.8, 3.9, '3.10', 3.11]
+        python-version: [ 3.11]
 
     env:
       UCI_DB: "https://archive.ics.uci.edu/ml/machine-learning-databases"
@@ -81,7 +81,7 @@ jobs:
       - name: Jupyter Notebook Execution
         run: |
               pwd
-              ls-a
+              echo "path is: pwd"
               cd  /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples
               ls-a
               jupyter execute tutorial_credit_scoring.ipynb
@@ -94,7 +94,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.8, 3.9, '3.10', 3.11]
+        python-version: [3.11]
 
     steps:
       - name: Check out repo
