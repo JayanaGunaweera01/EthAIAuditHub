@@ -79,7 +79,12 @@ jobs:
               ls -a
         
       - name: Jupyter Notebook Execution
-        run: jupyter execute tutorial_credit_scoring.ipynb
+        run: |
+              pwd
+              ls-a
+              cd  /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples
+              ls-a
+              jupyter execute tutorial_credit_scoring.ipynb
         shell: bash 
 
       
