@@ -72,11 +72,15 @@ jobs:
              pwd
              echo pwd
              pip install -r requirements.txt
+
+      - name: Divert to Jupyter notebook directory
+        run:  cd  /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples
+        
       - name: Jupyter Notebook Execution
         run: jupyter execute tutorial_credit_scoring.ipynb
         shell: bash 
 
-
+      
   build-r:
     runs-on: ubuntu-latest
 
