@@ -91,6 +91,23 @@ jobs:
 
               # Print the contents of the executed notebook
               cat /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/output_notebook.ipynb
+
+      - name: Commit files
+        run:
+          git config --local user.name actions-user
+
+          git config --local user.email "actions@github.com"
+
+          git add *
+
+          git commit -am "Audit Report $(date)"
+
+          git push origin main
+
+        env:
+          REPO_KEY: ${{secrets.ETHAI_AUDIT_HUB_GITHUB_TOKEN}}
+
+          username: github-actions
         shell: bash 
 
       
