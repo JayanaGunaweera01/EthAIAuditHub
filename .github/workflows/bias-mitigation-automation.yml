@@ -97,7 +97,7 @@ jobs:
         # Add a new step to commit and push the changes
       - name: Commit and Push Changes
         run: |
-          # name=git config --local user.name actions-user
+          name=git config --local user.name actions-user
           git config --local user.email "actions@github.com"
 
       - name: Persist Logs
@@ -110,7 +110,7 @@ jobs:
         uses: actions/upload-artifact@v2
         if: always()
         with:
-          name: "Audit Report $(date)"
+          name: "Audit Report $name - $date "
           path: /home/runner/work/EthAIAuditHub/EthAIAuditHub/automation/artifacts
 
           
