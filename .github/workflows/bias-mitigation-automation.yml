@@ -96,7 +96,7 @@ jobs:
         with:
           author_name: Plot update bot
           message: "Update Notebook"
-          add: "output_notebook.ipynb"
+          add: "/home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/output_notebook.ipynb"
           
             # Print the contents of the executed notebook
              # cat /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/output_notebook.ipynb
