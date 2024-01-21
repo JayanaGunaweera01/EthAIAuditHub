@@ -94,21 +94,25 @@ jobs:
             # Print the contents of the executed notebook
             cat /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/output_notebook.ipynb
         
-      # Add a new step to commit and push the changes
+        # Add a new step to commit and push the changes
       - name: Commit and Push Changes
         run: |
-          git config --local user.name actions-user
+          # name=git config --local user.name actions-user
           git config --local user.email "actions@github.com"
-      
-          # Add only the necessary file(s) to the commit
-          git add /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/output_notebook.ipynb
-      
-          # Amend the commit message if needed
-          git commit --amend -m "Audit Report $(date)"
-      
-          # Force push the changes
-          git push origin main -f
-          shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+
+      - name: Persist Logs
+        run: |
+          mkdir -p /home/runner/work/EthAIAuditHub/EthAIAuditHub/automation/artifacts
+          cp /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/output_notebook.ipynb /home/runner/work/EthAIAuditHub/EthAIAuditHub/automation/artifacts/
+        if: ${{ always() }}
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: "Audit Report $(date)"
+          path: /home/runner/work/EthAIAuditHub/EthAIAuditHub/automation/artifacts
+
           
       
   build-r:
