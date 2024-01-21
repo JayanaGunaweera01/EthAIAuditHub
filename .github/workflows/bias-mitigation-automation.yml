@@ -90,9 +90,16 @@ jobs:
             
             # Execute the Jupyter notebook and save the output to a new notebook
             jupyter nbconvert --to notebook --execute /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/tutorial_credit_scoring.ipynb --output /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/output_notebook.ipynb
-        
+
+      - name: commit updated notebook
+        uses: EndBug/add-and-commit@v7
+        with:
+          author_name: Plot update bot
+          message: "Update Notebook"
+          add: "output_notebook.ipynb"
+          
             # Print the contents of the executed notebook
-            cat /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/output_notebook.ipynb
+             # cat /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/output_notebook.ipynb
         
         # Add a new step to commit and push the changes
       - name: Commit and Push Changes
