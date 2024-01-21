@@ -110,7 +110,7 @@ jobs:
         uses: actions/upload-artifact@v2
         if: always()
         with:
-          name: "Audit Report $name - $date "
+          name: "Audit Report ${{ github.actor }} - ${{ github.run_number }} - ${{ github.sha }}"
           path: /home/runner/work/EthAIAuditHub/EthAIAuditHub/automation/artifacts
 
           
