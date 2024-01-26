@@ -76,12 +76,9 @@ jobs:
         
       - name: Execute Jupyter Notebook
         run: |
-           pwd
            cd  /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples
            pwd
-            # Install nbconvert
-            pip install nbconvert
-            
+    
             # Execute the Jupyter notebook and save the output to a new notebook
             jupyter nbconvert --to notebook --execute /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/tutorial_credit_scoring.ipynb --output /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/output_notebook.ipynb
 
