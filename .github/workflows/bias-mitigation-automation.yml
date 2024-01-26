@@ -89,7 +89,7 @@ jobs:
             pip install nbconvert
             
             # Execute the Jupyter notebook and save the output to a new notebook
-            jupyter nbconvert --to notebook --execute /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/tutorial_credit_scoring.ipynb --output /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/output_notebook.ipynb
+            jupyter nbconvert --to notebook --execute /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/tutorial_medical_expenditure.ipynb --output /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/output_notebook.ipynb
 
       - name: commit updated notebook
         uses: EndBug/add-and-commit@v7
