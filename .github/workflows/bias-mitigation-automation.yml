@@ -108,7 +108,7 @@ jobs:
           fi
 
       - name: List all the files in directory
-        run: ls-a
+        run: ls -a
 
       - name: Lint with flake8
         run: |
