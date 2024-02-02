@@ -2,17 +2,35 @@ name: ⚖ Bias Mitigation Automation
 
 # Controls when the action will run.
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-    paths-ignore:
-      - '*.md'
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-
+     inputs:
+      notebook:
+        description: "⚙️ Select the notebook you need to run."
+        default: "ethaiaudithub.ipynb"
+        type: choice
+        options:
+          - "ethaiaudithub.ipynb"
+          - "tutorial_bias_advertising.ipynb"
+          - "tutorial_medical_expenditure.ipynb"
+          - "demo_reweighing_preproc.ipynb"
+          - "demo_short_gerryfair_test.ipynb"
+          - "demo_reject_option_classification.ipynb"
+          - "demo_ot_metric.ipynb"
+          - "demo_optim_preproc_adult.ipynb"
+          - "demo_optim_data_preproc.ipynb"
+          - "demo_meta_classifier.ipynb"
+          - "demo_mdss_detector.ipynb"
+          - "demo_mdss_classifier_metric.ipynb"
+          - "demo_lime.ipynb"
+          - "demo_lfr.ipynb"
+          - "demo_json_explainers.ipynb"
+          - "demo_gerryfair.ipynb"
+          - "demo_exponentiated_gradient_reduction.ipynb"
+          - "demo_disparate_impact_remover.ipynb"
+          - "demo_deterministic_reranking.ipynb"
+          - "demo_calibrated_eqodds_postprocessing.ipynb"
+          - "demo_adversarial_debiasing.ipynb"
+  
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build-py:
@@ -80,7 +98,7 @@ jobs:
            pwd
     
             # Execute the Jupyter notebook and save the output to a new notebook
-            jupyter nbconvert --to notebook --execute /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/ethaiaudithub.ipynb --output /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/output_notebook.ipynb
+            jupyter nbconvert --to notebook --execute /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/${{ github.event.inputs.notebook }} --output /home/runner/work/EthAIAuditHub/EthAIAuditHub/examples/output_notebook.ipynb
 
       - name: commit updated notebook
         uses: EndBug/add-and-commit@v7
