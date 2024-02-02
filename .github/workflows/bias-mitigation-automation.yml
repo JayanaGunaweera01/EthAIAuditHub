@@ -141,13 +141,13 @@ jobs:
            pwd
     
            # Execute the Jupyter notebook and save the output to a new notebook
-           jupyter nbconvert --to notebook --execute ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }} --output ${{ github.workspace }}/automation/output_notebook.ipynb
+           jupyter nbconvert --to notebook --execute ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }} --output ${{ github.workspace }}/automation/${{ github.event.inputs.name }}
 
       - name: commit updated notebook
         uses: EndBug/add-and-commit@v7
         with:
           author_name: Plot update bot
-          message: "Update Notebook"
+          message: "Added executed notebook"
           add: "${{ github.workspace }}/automation/${{ github.event.inputs.name }}"
         
         # Add a new step to commit and push the changes
