@@ -4,6 +4,9 @@ name: ⚖ Bias Mitigation Automation
 on:
   workflow_dispatch:
      inputs:
+      name:
+        description: '📗 Enter a name for your notebook (ex: output_notebook.ipynb )'
+        required: true
       notebook:
         description: "⚙️ Select the notebook you need to run."
         default: "ethaiaudithub.ipynb"
@@ -145,7 +148,7 @@ jobs:
         with:
           author_name: Plot update bot
           message: "Update Notebook"
-          add: "${{ github.workspace }}/automation/output_notebook.ipynb"
+          add: "${{ github.workspace }}/automation/${{ github.event.inputs.name }}"
         
         # Add a new step to commit and push the changes
       - name: Commit and Push Changes
@@ -156,7 +159,7 @@ jobs:
       - name: Persist Logs
         run: |
           mkdir -p ${{ github.workspace }}/automation/artifacts
-          cp ${{ github.workspace }}/automation/output_notebook.ipynb ${{ github.workspace }}/automation/artifacts/
+          cp ${{ github.workspace }}/automation/${{ github.event.inputs.notebook }} ${{ github.workspace }}/automation/artifacts/
         if: ${{ always() }}
 
       - name: Upload Artifacts
