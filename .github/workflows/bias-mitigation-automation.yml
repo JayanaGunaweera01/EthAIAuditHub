@@ -101,13 +101,14 @@ jobs:
         run: |
           if [ -f *.zip ]; then
             unzip *.zip
-            ls-a
           elif [ -f *.tar.gz ]; then
             tar -xzvf *.tar.gz
-            ls-a
           else
             echo "No zip or tar.gz file found. Skipping extraction."
           fi
+
+      - name: List all the files in directory
+        run: ls-a
 
       - name: Lint with flake8
         run: |
