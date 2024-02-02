@@ -96,25 +96,27 @@ jobs:
             echo "No dataset URL provided. Skipping download."
           fi
 
-      - name: Unzip the downloaded dataset
+      - name: Unzip or untar the downloaded dataset
         if: ${{ inputs.dataset }}
         run: |
           if [ -f *.zip ]; then
-            unzip *.zip
+            unzip *.zip -d temp_folder
           elif [ -f *.tar.gz ]; then
-            tar -xzvf *.tar.gz
+            tar -xzvf *.tar.gz -C temp_folder
           else
             echo "No zip or tar.gz file found. Skipping extraction."
           fi
       
-      - name: Copy files to github workspace
+      - name: Copy CSV files to github workspace
         run: |
-          if [ -d temp_folder ]; then
-            cp -r temp_folder/* ${{ github.workspace }}
-            rm -rf temp_folder
-          else
-            echo "Error: Unzipped/untarred folder not found."
-          fi
+           if: ${{ exists('temp_folder') }}
+            run: |
+              if [ -d temp_folder ]; then
+                find temp_folder/ -type d -exec sh -c 'find "$0" -name "*.csv" -exec cp {} $1 \;' {} ${{ github.workspace }} \;
+                rm -rf temp_folder
+              else
+                echo "Error:No CSV file found."
+              fi
 
       - name: List all the files in directory
         run: ls -a
