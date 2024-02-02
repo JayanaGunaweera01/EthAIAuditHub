@@ -89,26 +89,26 @@ jobs:
 
       - name: Divert to Jupyter notebook directory
         run:  |
-              cd ${{ github.workspace }}/EthAIAuditHub/EthAIAuditHub/examples
+              cd ${{ github.workspace }}/examples
               ls -a
         
       - name: Execute Jupyter Notebook
         run: |
-           cd ${{ github.workspace }}/EthAIAuditHub/EthAIAuditHub/examples
+           cd ${{ github.workspace }}/examples
            pwd
     
            # Execute the Jupyter notebook and save the output to a new notebook
-           jupyter nbconvert --to notebook --execute ${{ github.workspace }}/EthAIAuditHub/EthAIAuditHub/examples/${{ github.event.inputs.notebook }} --output ${{ github.workspace }}/EthAIAuditHub/EthAIAuditHub/examples/output_notebook.ipynb
+           jupyter nbconvert --to notebook --execute ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }} --output ${{ github.workspace }}/examples/output_notebook.ipynb
 
       - name: commit updated notebook
         uses: EndBug/add-and-commit@v7
         with:
           author_name: Plot update bot
           message: "Update Notebook"
-          add: "${{ github.workspace }}/EthAIAuditHub/EthAIAuditHub/examples/output_notebook.ipynb"
+          add: "${{ github.workspace }}/examples/output_notebook.ipynb"
           
             # Print the contents of the executed notebook
-             # cat ${{ github.workspace }}/EthAIAuditHub/EthAIAuditHub/examples/output_notebook.ipynb
+             # cat ${{ github.workspace }}/examples/output_notebook.ipynb
         
         # Add a new step to commit and push the changes
       - name: Commit and Push Changes
@@ -118,8 +118,8 @@ jobs:
 
       - name: Persist Logs
         run: |
-          mkdir -p ${{ github.workspace }}/EthAIAuditHub/EthAIAuditHub/automation/artifacts
-          cp ${{ github.workspace }}/EthAIAuditHub/EthAIAuditHub/examples/output_notebook.ipynb ${{ github.workspace }}/EthAIAuditHub/EthAIAuditHub/automation/artifacts/
+          mkdir -p ${{ github.workspace }}/automation/artifacts
+          cp ${{ github.workspace }}/examples/output_notebook.ipynb ${{ github.workspace }}/automation/artifacts/
         if: ${{ always() }}
 
       - name: Upload Artifacts
@@ -127,7 +127,7 @@ jobs:
         if: always()
         with:
           name: "Audit Report ${{ github.actor }} - ${{ github.run_number }} "
-          path: ${{ github.workspace }}/EthAIAuditHub/EthAIAuditHub/automation/artifacts         
+          path: ${{ github.workspace }}/automation/artifacts         
       
   build-r:
     runs-on: ubuntu-latest
