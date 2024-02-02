@@ -77,7 +77,7 @@ jobs:
           pip list
           python -m rpy2.situation
 
-      - name: Download datasets
+      - name: Download basic datasets
         run: |
           wget ${UCI_DB}/adult/adult.data -P aif360/data/raw/adult/
           wget ${UCI_DB}/adult/adult.test -P aif360/data/raw/adult/
@@ -87,6 +87,14 @@ jobs:
           wget ${PROPUBLICA_GH}/compas-scores-two-years.csv -P aif360/data/raw/compas/
           wget ${UCI_DB}/00222/bank-additional.zip -P aif360/data/raw/bank/ && unzip -j aif360/data/raw/bank/bank-additional.zip -d aif360/data/raw/bank/ && rm aif360/data/raw/bank/bank-additional.zip
           (cd aif360/data/raw/meps;Rscript generate_data.R <<< y)
+
+      - name: Download extra datasets
+        run: |
+          if [ -n "${{ inputs.dataset }}" ]; then
+            wget ${{ inputs.dataset }}
+          else
+            echo "No dataset URL provided. Skipping download."
+          fi
 
       - name: Lint with flake8
         run: |
