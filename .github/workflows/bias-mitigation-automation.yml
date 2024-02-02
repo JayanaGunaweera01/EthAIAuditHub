@@ -96,6 +96,15 @@ jobs:
             echo "No dataset URL provided. Skipping download."
           fi
 
+      - name: Unzip the downloaded dataset
+        if: ${{ inputs.dataset }}
+        run: |
+          if [ -f *.zip ]; then
+            unzip *.zip
+          else
+            echo "No zip file found. Skipping unzip."
+          fi
+
       - name: Lint with flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names
