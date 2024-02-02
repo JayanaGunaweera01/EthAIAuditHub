@@ -99,7 +99,6 @@ jobs:
       - name: Unzip the downloaded dataset
         if: ${{ inputs.dataset }}
         run: |
-          run: |
           if [ -f *.zip ]; then
             unzip *.zip
             ls-a
