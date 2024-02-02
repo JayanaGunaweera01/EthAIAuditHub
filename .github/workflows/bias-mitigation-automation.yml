@@ -101,6 +101,7 @@ jobs:
         run: |
           if [ -f *.zip ]; then
             unzip *.zip
+            ls-a
           else
             echo "No zip file found. Skipping unzip."
           fi
