@@ -99,6 +99,7 @@ jobs:
       - name: Unzip or untar the downloaded dataset
         if: ${{ inputs.dataset }}
         run: |
+          mkdir -p temp_folder
           if [ -f *.zip ]; then
             unzip *.zip -d temp_folder
           elif [ -f *.tar.gz ]; then
