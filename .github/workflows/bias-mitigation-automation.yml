@@ -159,7 +159,7 @@ jobs:
       - name: Persist Logs
         run: |
           mkdir -p ${{ github.workspace }}/automation/artifacts
-          cp ${{ github.workspace }}/automation/${{ github.event.inputs.notebook }} ${{ github.workspace }}/automation/artifacts/
+          cp ${{ github.workspace }}/automation/${{ github.event.inputs.name }} ${{ github.workspace }}/automation/artifacts/
         if: ${{ always() }}
 
       - name: Upload Artifacts
