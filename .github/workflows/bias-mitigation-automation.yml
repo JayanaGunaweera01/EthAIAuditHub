@@ -111,7 +111,7 @@ jobs:
       - name: Copy CSV files to github workspace
         run: |
               if [ -d temp_folder ]; then
-                find temp_folder/ -type d -exec sh -c 'find "$0" -name "*.csv" -exec cp {} $1 \;' {} ${{ github.workspace }} \;
+                find temp_folder -type f -name "*.csv" -exec cp -r {} ${{ github.workspace }} \;
                 rm -rf temp_folder
               else
                 echo "Error:No CSV file found."
