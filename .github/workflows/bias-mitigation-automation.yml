@@ -106,6 +106,15 @@ jobs:
           else
             echo "No zip or tar.gz file found. Skipping extraction."
           fi
+      
+      - name: Copy files to github workspace
+        run: |
+          if [ -d temp_folder ]; then
+            cp -r temp_folder/* ${{ github.workspace }}
+            rm -rf temp_folder
+          else
+            echo "Error: Unzipped/untarred folder not found."
+          fi
 
       - name: List all the files in directory
         run: ls -a
