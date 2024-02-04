@@ -4,6 +4,9 @@ name: ⚖ Bias Mitigation Automation
 on:
   workflow_dispatch:
      inputs:
+      name:
+        description: '📗 Enter a name for your notebook (ex: output_notebook.ipynb )'
+        required: true
       notebook:
         description: "⚙️ Select the notebook you need to run."
         default: "ethaiaudithub.ipynb"
@@ -41,8 +44,8 @@ on:
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  automation:
-    runs-on: ubuntu-latest-gpu
+  build-py:
+    runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
@@ -133,14 +136,14 @@ jobs:
            pwd
     
            # Execute the Jupyter notebook and save the output to a new notebook
-           jupyter nbconvert --to notebook --execute ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }} --output ${{ github.workspace }}/automation/output_notebook.ipynb
+           jupyter nbconvert --to notebook --execute ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }} --output ${{ github.workspace }}/automation/${{ github.event.inputs.name }}
 
       - name: commit updated notebook
         uses: EndBug/add-and-commit@v7
         with:
           author_name: Plot update bot
-          message: "Update Notebook"
-          add: "${{ github.workspace }}/examples/output_notebook.ipynb"
+          message: "Added executed notebook"
+          add: "${{ github.workspace }}/automation/${{ github.event.inputs.name }}"
         
         # Add a new step to commit and push the changes
       - name: Commit and Push Changes
@@ -150,7 +153,7 @@ jobs:
       - name: Persist Logs
         run: |
           mkdir -p ${{ github.workspace }}/automation/artifacts
-          cp ${{ github.workspace }}/examples/output_notebook.ipynb ${{ github.workspace }}/automation/artifacts/
+          cp ${{ github.workspace }}/automation/${{ github.event.inputs.name }} ${{ github.workspace }}/automation/artifacts/
         if: ${{ always() }}
 
       - name: Upload Artifacts
