@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
      inputs:
       notebook:
-        description: "📗 Select the notebook you need to run."
+        description: "⚙️ Select the notebook you need to run."
         default: "ethaiaudithub.ipynb"
         type: choice
         options:
@@ -30,7 +30,6 @@ on:
           - "demo_deterministic_reranking.ipynb"
           - "demo_calibrated_eqodds_postprocessing.ipynb"
           - "demo_adversarial_debiasing.ipynb"
-          - "ethical_bias_mitigation.ipynb"
 
       dataset:
         description: '🗃️ Enter Dataset URL'
@@ -42,7 +41,7 @@ on:
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  bias_detection_automation:
+  automation:
     runs-on: ubuntu-latest
 
     strategy:
@@ -141,7 +140,7 @@ jobs:
         with:
           author_name: Plot update bot
           message: "Update Notebook"
-          add: "${{ github.workspace }}/automation/output_notebook.ipynb"
+          add: "${{ github.workspace }}/examples/output_notebook.ipynb"
         
         # Add a new step to commit and push the changes
       - name: Commit and Push Changes
@@ -151,7 +150,7 @@ jobs:
       - name: Persist Logs
         run: |
           mkdir -p ${{ github.workspace }}/automation/artifacts
-          cp ${{ github.workspace }}/automation/output_notebook.ipynb ${{ github.workspace }}/automation/artifacts/
+          cp ${{ github.workspace }}/examples/output_notebook.ipynb ${{ github.workspace }}/automation/artifacts/
         if: ${{ always() }}
 
       - name: Upload Artifacts
