@@ -13,6 +13,7 @@ on:
         type: choice
         options:
           - "ethaiaudithub.ipynb"
+          - "ethical_bias_mitigation.ipynb"
           - "tutorial_bias_advertising.ipynb"
           - "tutorial_medical_expenditure.ipynb"
           - "demo_reweighing_preproc.ipynb"
