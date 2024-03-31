@@ -13,6 +13,7 @@ on:
         type: choice
         options:
           - "ethaiaudithub.ipynb"
+          - "ethaiaudithubDemo.ipynb"
           - "ethical_bias_mitigation.ipynb"
           - "tutorial_bias_advertising.ipynb"
           - "tutorial_medical_expenditure.ipynb"
@@ -34,13 +35,58 @@ on:
           - "demo_deterministic_reranking.ipynb"
           - "demo_calibrated_eqodds_postprocessing.ipynb"
           - "demo_adversarial_debiasing.ipynb"
-
-      dataset:
-        description: '🗃️ Enter Dataset URL'
+      demoMetric:
+        description: '📐 Select Metric'
+        default: "BinaryLabelDatasetMetric"
+        type: choice
+        options:
+          - "DatasetMetric"
+          - "BinaryLabelDatasetMetric"
+          - "ClassificationMetric"
+          - "SampleDistortionMetric"
+          - "MDSSClassificationMetric"
+      demoDataset:
+        description: '📊 Select Dataset'
+        default: "GermanDataset"
+        type: choice
+        options:
+          - "AdultDataset"
+          - "BankDataset"
+          - "CompasDataset"
+          - "CompasDataset"
+          - "GermanDataset"
+          - "LawSchoolGPADataset"
+          - "MEPSDataset19"
+          - "MEPSDataset20"
+          - "MEPSDataset21"
+      demoAlgorithm:
+        description: '💡 Select Algorithm (preprocessing/inprocessing/postprocessing)'
+        default: "Reweighing"
+        type: choice
+        options:
+          - "Reweighing"
+          - "DisparateImpactRemover"
+          - "LFR"
+          - "OptimPreproc"
+          - "AdversarialDebiasing"
+          - "ARTClassifier"
+          - "GerryFairClassifier"
+          - "MetaFairClassifier"
+          - "PrejudiceRemover"
+          - "ExponentiatedGradientReduction"
+          - "GridSearchReduction"
+          - "CalibratedEqOddsPostprocessing"
+          - "EqOddsPostprocessing"
+          - "RejectOptionClassification"
+          - "DeterministicReranking"
+      demoAlgoPath:
+        description: '👣 Enter path of the file containing Algorithm.Ex:preprocessing.optim_preproc_helpers.data_preproc_functions\'
         required: false
-
+      dataset:
+        description: '🗃️ Enter Dataset URL if you need any, except basic datasets'
+        required: false
       algorithm:
-        description: '💡 Enter Algorithm URL if you need any, except basic algorithms'
+        description: '⚙️ Enter Algorithm URL if you need any, except basic algorithms'
         required: false
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
