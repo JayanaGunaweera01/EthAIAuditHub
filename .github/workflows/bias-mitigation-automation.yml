@@ -8,7 +8,7 @@ on:
         description: '📗 Enter a name for your notebook (ex: output_notebook.ipynb )'
         required: true
       notebook:
-        description: "⚙️ Select the notebook you need to run."
+        description: "📒 Select the notebook you need to run."
         default: "ethaiaudithub.ipynb"
         type: choice
         options:
@@ -181,6 +181,15 @@ jobs:
         run: |
            cd ${{ github.workspace }}/examples
            pwd
+
+           # Give read write permissions to edit ipynb file
+           chmod +x ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
+
+           # Replace ipynb file inputs with user inputs
+           sed -i "s/Dataset/${{ github.event.inputs.demoDataset }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
+           sed -i "s/Metric/${{ github.event.inputs.demoMetric }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
+           sed -i "s/Algorithm/${{ github.event.inputs.demoAlgorithm }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
+           sed -i "s/Path/${{ github.event.inputs.demoAlgoPath }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
     
            # Execute the Jupyter notebook and save the output to a new notebook
            jupyter nbconvert --to notebook --execute ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }} --output ${{ github.workspace }}/automation/${{ github.event.inputs.name }}
