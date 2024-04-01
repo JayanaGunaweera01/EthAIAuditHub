@@ -1,4 +1,4 @@
-name: ⚖ EthAIAuditHub Experiment Workflow
+name: 👨‍🔬 EthAIAuditHub Experiment Workflow
 
 on:
   workflow_dispatch:
