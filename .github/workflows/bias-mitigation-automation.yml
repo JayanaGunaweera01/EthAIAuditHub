@@ -9,11 +9,10 @@ on:
         required: true
       notebook:
         description: "📒 Select the notebook you need to run."
+        default: "ethaiaudithub.ipynb"
         type: choice
         options:
           - "ethaiaudithub.ipynb"
-          - "ethaiaudithubDemo.ipynb"
-          - "ethaiaudithubExtended.ipynb"
           - "ethical_bias_mitigation.ipynb"
           - "tutorial_bias_advertising.ipynb"
           - "tutorial_medical_expenditure.ipynb"
@@ -35,49 +34,6 @@ on:
           - "demo_deterministic_reranking.ipynb"
           - "demo_calibrated_eqodds_postprocessing.ipynb"
           - "demo_adversarial_debiasing.ipynb"
-      demoMetric:
-        description: '📐 Select Metric'
-        type: choice
-        options:
-          - "DatasetMetric"
-          - "BinaryLabelDatasetMetric"
-          - "ClassificationMetric"
-          - "SampleDistortionMetric"
-          - "MDSSClassificationMetric"
-      demoDataset:
-        description: '📊 Select Dataset'
-        type: choice
-        options:
-          - "AdultDataset"
-          - "BankDataset"
-          - "CompasDataset"
-          - "GermanDataset"
-          - "LawSchoolGPADataset"
-          - "MEPSDataset19"
-          - "MEPSDataset20"
-          - "MEPSDataset21"
-      demoAlgorithm:
-        description: '💡 Select Algorithm (preprocessing/inprocessing/postprocessing)'
-        type: choice
-        options:
-          - "Reweighing"
-          - "DisparateImpactRemover"
-          - "LFR"
-          - "OptimPreproc"
-          - "AdversarialDebiasing"
-          - "ARTClassifier"
-          - "GerryFairClassifier"
-          - "MetaFairClassifier"
-          - "PrejudiceRemover"
-          - "ExponentiatedGradientReduction"
-          - "GridSearchReduction"
-          - "CalibratedEqOddsPostprocessing"
-          - "EqOddsPostprocessing"
-          - "RejectOptionClassification"
-          - "DeterministicReranking"
-      demoAlgoPath:
-        description: '👣 Enter path of the file containing Algorithm.Ex:preprocessing.optim_preproc_helpers.data_preproc_functions\'
-        required: false
       dataset:
         description: '🗃️ Enter Dataset URL if you need any, except basic datasets'
         required: false
@@ -178,15 +134,6 @@ jobs:
            cd ${{ github.workspace }}/examples
            pwd
 
-           # Give read write permissions to edit ipynb file
-           chmod +x ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
-
-           # Replace ipynb file inputs with user inputs
-           sed -i "s/Dataset/${{ github.event.inputs.demoDataset }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
-           sed -i "s/Metric/${{ github.event.inputs.demoMetric }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
-           sed -i "s/Algorithm/${{ github.event.inputs.demoAlgorithm }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
-           sed -i "s/Path/${{ github.event.inputs.demoAlgoPath }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
-    
            # Execute the Jupyter notebook and save the output to a new notebook
            jupyter nbconvert --to notebook --execute ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }} --output ${{ github.workspace }}/automation/${{ github.event.inputs.name }}
 
