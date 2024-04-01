@@ -9,7 +9,6 @@ on:
         required: true
       notebook:
         description: "📒 Select the notebook you need to run."
-        default: "ethaiaudithub.ipynb"
         type: choice
         options:
           - "ethaiaudithub.ipynb"
@@ -38,7 +37,6 @@ on:
           - "demo_adversarial_debiasing.ipynb"
       demoMetric:
         description: '📐 Select Metric'
-        default: "BinaryLabelDatasetMetric"
         type: choice
         options:
           - "DatasetMetric"
@@ -48,7 +46,6 @@ on:
           - "MDSSClassificationMetric"
       demoDataset:
         description: '📊 Select Dataset'
-        default: "GermanDataset"
         type: choice
         options:
           - "AdultDataset"
@@ -61,7 +58,6 @@ on:
           - "MEPSDataset21"
       demoAlgorithm:
         description: '💡 Select Algorithm (preprocessing/inprocessing/postprocessing)'
-        default: "Reweighing"
         type: choice
         options:
           - "Reweighing"
