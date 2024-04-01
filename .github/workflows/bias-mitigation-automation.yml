@@ -19,6 +19,7 @@ on:
           - "demo_reweighing_preproc.ipynb"
           - "demo_short_gerryfair_test.ipynb"
           - "demo_reject_option_classification.ipynb"
+          - "demo_new_features.ipynb"
           - "demo_ot_metric.ipynb"
           - "demo_optim_preproc_adult.ipynb"
           - "demo_optim_data_preproc.ipynb"
