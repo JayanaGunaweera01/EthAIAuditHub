@@ -170,9 +170,11 @@ jobs:
             while gh run view ${{ github.run_id }} --log > workflow_log.txt | grep -q "still in progress"; do
               sleep 10s
             done
-            pandoc workflow_log.txt -o workflow_log.pdf
         if: always()
-                  
+
+      - name: Convert Workflow Log to PDF
+        run: pandoc ${{ github.workspace }}/automation/workflow_log.txt -o ${{ github.workspace }}/automation/workflow_log.pdf
+        
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         if: always()
