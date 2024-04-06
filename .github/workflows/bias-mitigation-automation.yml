@@ -178,7 +178,7 @@ jobs:
         if: always()
         with:
           name: "Audit Report ${{ github.actor }} - ${{ github.run_number }} "
-          path: ${{ github.workspace }}/automation/artifacts   
+          path: ${{ github.workspace }}/automation
             
   build-r:
     runs-on: ubuntu-latest
