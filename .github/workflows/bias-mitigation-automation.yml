@@ -165,7 +165,7 @@ jobs:
       - name: Generate Workflow Log PDF
         run: |
           cd ${{ github.workspace }}/automation
-          gh run view ${{ github.run_id }} --log --raw > workflow_log.txt
+          gh run view ${{ github.run_id }} --log > workflow_log.txt
           pandoc workflow_log.txt -o workflow_log.pdf
         if: always()
       
