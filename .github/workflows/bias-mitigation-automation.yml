@@ -162,21 +162,19 @@ jobs:
           cd ${{ github.workspace }}/automation
           jupyter nbconvert --to pdf "${{ github.workspace }}/automation/${{ github.event.inputs.name }}" --output "${{ github.workspace }}/automation/${{ github.event.inputs.name }}_log.pdf"
         
+      - name: Wait for Run Completion
+        run: |
+          while gh run view ${{ github.run_id }} | grep -q "is still in progress"; do
+            sleep 10s
+          done
+
       - name: Generate Workflow Log PDF
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd ${{ github.workspace }}/automation
-          
-          # Wait for the run to complete
-          while gh run view ${{ github.run_id }} | grep -q "is still in progress"; do
-            sleep 10s
-          done
-          
-          # Once the run is complete, fetch the logs and convert them to a PDF file
           gh run view ${{ github.run_id }} --log > workflow_log.txt
           pandoc workflow_log.txt -o workflow_log.pdf
-        if: always()
 
       - name: Create Artifacts
         run: |
@@ -185,7 +183,6 @@ jobs:
       
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
-        if: always()
         with:
           name: "Audit Report ${{ github.actor }} - ${{ github.run_number }} "
           path: ${{ github.workspace }}/automation/artifacts
