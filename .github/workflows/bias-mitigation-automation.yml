@@ -167,15 +167,22 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd ${{ github.workspace }}/automation
-          gh run view ${{ github.run_id }} --log >> workflow_log.txt
-          while grep -q "still in progress" workflow_log.txt; do
+          
+          # Wait for the run to complete
+          while gh run view ${{ github.run_id }} | grep -q "is still in progress"; do
             sleep 10s
           done
+          
+          # Once the run is complete, fetch the logs and convert them to a PDF file
+          gh run view ${{ github.run_id }} --log > workflow_log.txt
           pandoc workflow_log.txt -o workflow_log.pdf
-          mkdir -p artifacts
-          mv workflow_log.pdf artifacts/
         if: always()
 
+      - name: Create Artifacts
+        run: |
+          mkdir -p artifacts
+          mv workflow_log.pdf artifacts/
+      
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         if: always()
