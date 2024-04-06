@@ -163,12 +163,6 @@ jobs:
           pandoc workflow_log.txt -o workflow_log.pdf
         if: always()
       
-      - name: Persist Logs
-        run: |
-          mkdir -p ${{ github.workspace }}/automation/artifacts
-          cp ${{ github.workspace }}/automation/${{ github.event.inputs.name }}_log.pdf ${{ github.workspace }}/automation/artifacts/auditReport.pdf
-        if: always()
-      
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         if: always()
