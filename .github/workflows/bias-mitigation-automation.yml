@@ -182,18 +182,7 @@ jobs:
         with:
           name: "Audit Report ${{ github.actor }} - ${{ github.run_number }} "
           path: ${{ github.workspace }}/automation/artifacts
-
-
-      - name: Convert Workflow Log to PDF
-        run: pandoc ${{ github.workspace }}/automation/workflow_log.txt -o ${{ github.workspace }}/automation/workflow_log.pdf
-        
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: "Audit Report ${{ github.actor }} - ${{ github.run_number }} "
-          path: ${{ github.workspace }}/automation
-            
+          
   build-r:
     runs-on: ubuntu-latest
 
