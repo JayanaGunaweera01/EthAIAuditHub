@@ -150,10 +150,15 @@ jobs:
         run: |
           git config --local user.name actions-user
           git config --local user.email "actions@github.com"
-      - name: Install Pandoc
+
+      - name: Install TeX Live
         run: |
           sudo apt-get update
-          sudo apt-get install -y pandoc
+          sudo apt-get install -y texlive-xetex
+            - name: Install Pandoc
+              run: |
+                sudo apt-get update
+                sudo apt-get install -y pandoc
           
       - name: Convert Execution Log to PDF
         run: |
