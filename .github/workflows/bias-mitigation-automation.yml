@@ -154,12 +154,12 @@ jobs:
       - name: Convert Execution Log to PDF
         run: |
           cd ${{ github.workspace }}/automation
-          jupyter nbconvert --to pdf "${{ github.workspace }}/automation/${{ github.event.inputs.name }}" --output "${{ github.workspace }}/automation/${{ github.event.inputs.name }}audit.pdf"
+          jupyter nbconvert --to pdf "${{ github.workspace }}/automation/${{ github.event.inputs.name }}" --output "${{ github.workspace }}/automation/audit.pdf"
       
       - name: Persist Logs
         run: |
           mkdir -p ${{ github.workspace }}/automation/artifacts
-          cp ${{ github.workspace }}/automation/${{ github.event.inputs.name }}audit.pdf ${{ github.workspace }}/automation/artifacts/
+          cp ${{ github.workspace }}/automation/audit.pdf ${{ github.workspace }}/automation/artifacts/
         if: ${{ always() }}
       
       - name: Upload Artifacts
