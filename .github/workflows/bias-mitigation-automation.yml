@@ -150,19 +150,25 @@ jobs:
         run: |
           git config --local user.name actions-user
           git config --local user.email "actions@github.com"
+          
+      - name: Convert Execution Log to PDF
+        run: |
+          cd ${{ github.workspace }}/automation
+          jupyter nbconvert --to pdf "${{ github.workspace }}/automation/${{ github.event.inputs.name }}" --output "${{ github.workspace }}/automation/${{ github.event.inputs.name }}_log.pdf"
+      
       - name: Persist Logs
         run: |
           mkdir -p ${{ github.workspace }}/automation/artifacts
-          cp ${{ github.workspace }}/automation/${{ github.event.inputs.name }} ${{ github.workspace }}/automation/artifacts/
+          cp ${{ github.workspace }}/automation/${{ github.event.inputs.name }}_log.pdf ${{ github.workspace }}/automation/artifacts/audit.pdf
         if: ${{ always() }}
-
+      
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         if: always()
         with:
           name: "Audit Report ${{ github.actor }} - ${{ github.run_number }} "
-          path: ${{ github.workspace }}/automation/artifacts         
-      
+          path: ${{ github.workspace }}/automation/artifacts   
+            
   build-r:
     runs-on: ubuntu-latest
 
