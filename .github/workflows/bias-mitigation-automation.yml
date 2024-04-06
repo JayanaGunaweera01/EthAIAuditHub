@@ -165,13 +165,13 @@ jobs:
       - name: Generate Workflow Log PDF
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          run: |
+        run: |
             cd ${{ github.workspace }}/automation
             while gh run view ${{ github.run_id }} --log > workflow_log.txt | grep -q "still in progress"; do
               sleep 10s
             done
             pandoc workflow_log.txt -o workflow_log.pdf
-          if: always()
+        if: always()
                   
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
