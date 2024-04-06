@@ -161,16 +161,18 @@ jobs:
         run: |
           cd ${{ github.workspace }}/automation
           jupyter nbconvert --to pdf "${{ github.workspace }}/automation/${{ github.event.inputs.name }}" --output "${{ github.workspace }}/automation/${{ github.event.inputs.name }}_log.pdf"
-      
+        
       - name: Generate Workflow Log PDF
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
             cd ${{ github.workspace }}/automation
-            while gh run view ${{ github.run_id }} --log > workflow_log.txt | grep -q "still in progress"; do
+            while gh run view ${{ github.run_id }} --log > workflow_log.txt && grep -q "still in progress" workflow_log.txt; do
               sleep 10s
             done
+            pandoc workflow_log.txt -o workflow_log.pdf
         if: always()
+
 
       - name: Convert Workflow Log to PDF
         run: pandoc ${{ github.workspace }}/automation/workflow_log.txt -o ${{ github.workspace }}/automation/workflow_log.pdf
