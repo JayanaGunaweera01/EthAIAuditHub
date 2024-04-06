@@ -154,13 +154,20 @@ jobs:
       - name: Convert Execution Log to PDF
         run: |
           cd ${{ github.workspace }}/automation
-          jupyter nbconvert --to pdf "${{ github.workspace }}/automation/${{ github.event.inputs.name }}" --output "${{ github.workspace }}/automation/audit.pdf"
+          jupyter nbconvert --to pdf "${{ github.workspace }}/automation/${{ github.event.inputs.name }}" --output "${{ github.workspace }}/automation/${{ github.event.inputs.name }}_log.pdf"
+      
+      - name: Generate Workflow Log PDF
+        run: |
+          cd ${{ github.workspace }}/automation
+          gh run view ${{ github.run_id }} --log --raw > workflow_log.txt
+          pandoc workflow_log.txt -o workflow_log.pdf
+        if: always()
       
       - name: Persist Logs
         run: |
           mkdir -p ${{ github.workspace }}/automation/artifacts
-          cp ${{ github.workspace }}/automation/audit.pdf ${{ github.workspace }}/automation/artifacts/
-        if: ${{ always() }}
+          cp ${{ github.workspace }}/automation/${{ github.event.inputs.name }}_log.pdf ${{ github.workspace }}/automation/artifacts/auditReport.pdf
+        if: always()
       
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
