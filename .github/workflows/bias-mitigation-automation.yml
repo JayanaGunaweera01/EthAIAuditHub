@@ -163,12 +163,14 @@ jobs:
           jupyter nbconvert --to pdf "${{ github.workspace }}/automation/${{ github.event.inputs.name }}" --output "${{ github.workspace }}/automation/${{ github.event.inputs.name }}_log.pdf"
       
       - name: Generate Workflow Log PDF
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd ${{ github.workspace }}/automation
           gh run view ${{ github.run_id }} --log > workflow_log.txt
           pandoc workflow_log.txt -o workflow_log.pdf
         if: always()
-      
+            
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         if: always()
