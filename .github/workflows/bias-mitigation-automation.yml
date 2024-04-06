@@ -164,11 +164,16 @@ jobs:
         
       - name: Get Run ID
         id: get_run_id
-        run: echo "::set-output name=run_id::$(gh run view ${{ github.run_id }} --json id)"
+        run: |
+          echo "::set-output name=run_id::$(gh run view ${{ github.run_id }} --json id)"
 
       - name: Wait for Run Completion
         run: |
-          while gh run view ${{ steps.get_run_id.outputs.run_id }} --json status | jq -r '.status' | grep -q "in_progress"; do
+          while true; do
+            status=$(gh run view ${{ steps.get_run_id.outputs.run_id }} --json status | jq -r '.status')
+            if [ "$status" != "in_progress" ]; then
+              break
+            fi
             sleep 10s
           done
 
