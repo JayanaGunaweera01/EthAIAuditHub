@@ -175,7 +175,7 @@ jobs:
       - name: Get Run ID
         id: get_run_id
         run: |
-          echo "::set-output name=run_id::$(gh run list --json workflow_id=$GITHUB_WORKFLOW | jq -r '.runs[0].id')"
+          echo "::set-output name=run_id::$(gh run list --json workflow_id=${{ github.event.workflow.id }} | jq -r '.runs[0].id')"
       
       - name: Wait for Run Completion
         run: |
