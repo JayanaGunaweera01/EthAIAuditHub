@@ -12,9 +12,19 @@ on:
         options:
           - "ethaiaudithubDemo.ipynb"
           - "ethaiaudithubExtended.ipynb"
-      demoMetric:
-        description: '📐 Select Metric'
+      demoMetric1:
+        description: '📐 Select Metric1'
         default: "BinaryLabelDatasetMetric"
+        type: choice
+        options:
+          - "DatasetMetric"
+          - "BinaryLabelDatasetMetric"
+          - "ClassificationMetric"
+          - "SampleDistortionMetric"
+          - "MDSSClassificationMetric"
+      demoMetric2:
+        description: '📐 Select if you need to test with a second metric'
+        default: "ClassificationMetric"
         type: choice
         options:
           - "DatasetMetric"
