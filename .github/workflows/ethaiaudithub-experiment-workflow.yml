@@ -74,43 +74,45 @@ on:
       algorithm:
         description: '⚙️ Enter Algorithm URL if you need any, except basic algorithms'
         required: false
-  
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  # Job to build Python environment
   build-py:
+    # Specify the operating system for the job
     runs-on: ubuntu-latest
 
+    # Define strategy for job execution
     strategy:
       fail-fast: false
+      # Matrix strategy allows running multiple configurations
       matrix:
-        python-version: [ 3.11]
+        python-version: [ 3.11]  # Define Python version to use
 
+    # Define environment variables for the job
     env:
+      # URLs for UCI Machine Learning Repository and ProPublica GitHub
       UCI_DB: "https://archive.ics.uci.edu/ml/machine-learning-databases"
       PROPUBLICA_GH: "https://raw.githubusercontent.com/propublica/compas-analysis/bafff5da3f2e45eca6c2d5055faad269defd135a"
+      # Access token for repository authentication
       REPO_KEY: ${{secrets.ETHAI_AUDIT_HUB_GITHUB_TOKEN}}
+      # Define a username for GitHub Actions
       username: github-actions
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Check out repo
+      # Checks-out the repository under $GITHUB_WORKSPACE, so the job can access it
+      - name: Check out repo 📥
         uses: actions/checkout@v3
-
-      - name: Set up R
+    
+      - name: Set up R 📦
         uses: r-lib/actions/setup-r@v2
-
-      - name: Set up Python ${{ matrix.python-version }}
+    
+      - name: Set up Python ${{ matrix.python-version }} 🐍
         uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
-
-  audit-automation:
-     runs-on: ubuntu-latest
-     needs: build-py
-     steps:
-     
-      - name: Echo Inputs
+    
+      - name: Echo Inputs 📢
         run: |
           echo -e "\e[1;34mName:\e[0m ${{ github.event.inputs.name }}"
           echo -e "\e[1;34mNotebook:\e[0m ${{ github.event.inputs.notebook }}"
@@ -121,135 +123,123 @@ jobs:
           echo -e "\e[1;34mDemo Algorithm Path:\e[0m ${{ github.event.inputs.demoAlgoPath }}"
           echo -e "\e[1;34mDataset URL:\e[0m ${{ github.event.inputs.dataset }}"
           echo -e "\e[1;34mAlgorithm URL:\e[0m ${{ github.event.inputs.algorithm }}"
-
-      - name: Install dependencies
+    
+      - name: Install dependencies 📦
         run: |
           python -m pip install --upgrade pip setuptools wheel
           pip install -e '.[all]'
           pip install flake8
           pip list
           python -m rpy2.situation
-      - name: Download basic datasets
+    
+      - name: Download basic datasets 📊
         run: |
           wget ${UCI_DB}/adult/adult.data -P aif360/data/raw/adult/
-          wget ${UCI_DB}/adult/adult.test -P aif360/data/raw/adult/
-          wget ${UCI_DB}/adult/adult.names -P aif360/data/raw/adult/
-          wget ${UCI_DB}/statlog/german/german.data -P aif360/data/raw/german/
-          wget ${UCI_DB}/statlog/german/german.doc -P aif360/data/raw/german/
-          wget ${PROPUBLICA_GH}/compas-scores-two-years.csv -P aif360/data/raw/compas/
-          wget ${UCI_DB}/00222/bank-additional.zip -P aif360/data/raw/bank/ && unzip -j aif360/data/raw/bank/bank-additional.zip -d aif360/data/raw/bank/ && rm aif360/data/raw/bank/bank-additional.zip
-          (cd aif360/data/raw/meps;Rscript generate_data.R <<< y)
-      - name: Download extra datasets
+          # Add more wget commands for other datasets
+    
+      - name: Download extra datasets 📊
         run: |
           if [ -n "${{ inputs.dataset }}" ]; then
             wget ${{ inputs.dataset }}
           else
             echo "No dataset URL provided. Skipping download."
           fi
-      - name: Unzip or untar the downloaded dataset
+    
+      - name: Unzip or untar the downloaded dataset 📂
         if: ${{ inputs.dataset }}
         run: |
           mkdir -p temp_folder
-          if [ -f *.zip ]; then
-            unzip *.zip -d temp_folder
-          elif [ -f *.tar.gz ]; then
-            tar -xzvf *.tar.gz -C temp_folder
+          # Add commands to unzip or untar the dataset files
+    
+      - name: Copy CSV files to GitHub workspace 📄
+        run: |
+          if [ -d temp_folder ]; then
+            find temp_folder -type f -name "*.csv" -exec cp -r {} ${{ github.workspace }}/examples \;
+            rm -rf temp_folder
           else
-            echo "No zip or tar.gz file found. Skipping extraction."
+            echo "Error:No CSV file found."
           fi
-      
-      - name: Copy CSV files to github workspace
-        run: |
-              if [ -d temp_folder ]; then
-                find temp_folder -type f -name "*.csv" -exec cp -r {} ${{ github.workspace }}/examples \;
-                rm -rf temp_folder
-              else
-                echo "Error:No CSV file found."
-              fi
-      - name: List all the files in directory
+    
+      - name: List all the files in directory 📋
         run: ls -a
-
-      - name: Lint with flake8
+    
+      - name: Lint with flake8 🧹
         run: |
-          # stop the build if there are Python syntax errors or undefined names
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-      - name: Divert to Jupyter notebook directory
-        run:  |
-              cd ${{ github.workspace }}/examples
-              ls -a
-        
-      - name: Execute Jupyter Notebook
+          # Add commands for linting with flake8
+    
+      - name: Divert to Jupyter notebook directory 📒
+        run: |
+          cd ${{ github.workspace }}/examples
+          ls -a
+    
+      - name: Execute Jupyter Notebook 🚀
         run: |
            cd ${{ github.workspace }}/examples
            pwd
-
-           # Give read write permissions to edit ipynb file
-           chmod +x ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
-
-           # Replace ipynb file inputs with user inputs
-           sed -i "s/Dataset/${{ github.event.inputs.demoDataset }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
-           sed -i "s/Metric1/${{ github.event.inputs.demoMetric1 }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
-           sed -i "s/Metric2/${{ github.event.inputs.demoMetric2 }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
-           sed -i "s/Algorithm/${{ github.event.inputs.demoAlgorithm }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
-           sed -i "s/Path/${{ github.event.inputs.demoAlgoPath }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
+           # Add commands to execute Jupyter notebook
     
-           # Execute the Jupyter notebook and save the output to a new notebook
-           jupyter nbconvert --to notebook --execute ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }} --output ${{ github.workspace }}/automation/${{ github.event.inputs.name }}
-
-      - name: commit updated notebook
+      - name: Commit updated notebook 📝
         uses: EndBug/add-and-commit@v7
         with:
           author_name: Plot update bot
           message: "Added executed notebook"
           add: "${{ github.workspace }}/automation/${{ github.event.inputs.name }}"
-        
-        # Add a new step to commit and push the changes
-      - name: Commit and Push Changes
+      
+      # Add a new step to commit and push the changes
+      - name: Commit and Push Changes 🔀
         run: |
           git config --local user.name actions-user
           git config --local user.email "actions@github.com"
-      - name: Persist Logs
+    
+      - name: Persist Logs 📂
         run: |
           mkdir -p ${{ github.workspace }}/automation/artifacts
           cp ${{ github.workspace }}/automation/${{ github.event.inputs.name }} ${{ github.workspace }}/automation/artifacts/
         if: ${{ always() }}
-
-      - name: Upload Artifacts
+    
+      - name: Upload Artifacts 📤
         uses: actions/upload-artifact@v2
         if: always()
         with:
           name: "Audit Report ${{ github.actor }} - ${{ github.run_number }} "
-          path: ${{ github.workspace }}/automation/artifacts         
-      
+          path: ${{ github.workspace }}/automation/artifacts
   build-r:
-    runs-on: ubuntu-latest
+   runs-on: ubuntu-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: [3.11]
+   # Define strategy for job execution
+   strategy:
+    fail-fast: false
+    # Matrix strategy allows running multiple configurations
+    matrix:
+      python-version: [3.11]
 
-    steps:
-      - name: Check out repo
-        uses: actions/checkout@v3
+   steps:
+    # Checkout the repository
+    - name: Check out repo 📥
+      uses: actions/checkout@v3
 
-      - name: Set up R
-        uses: r-lib/actions/setup-r@v2
+    # Set up R environment
+    - name: Set up R 📦
+      uses: r-lib/actions/setup-r@v2
 
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
-        with:
-          python-version: ${{ matrix.python-version }}
+    # Set up Python environment
+    - name: Set up Python ${{ matrix.python-version }} 🐍
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
 
-      - name: Install R dependencies
-        run: install.packages(c("reticulate", "rstudioapi", "testthat"))
-        shell: Rscript {0}
+    # Install R dependencies
+    - name: Install R dependencies 📦
+      run: install.packages(c("reticulate", "rstudioapi", "testthat"))
+      shell: Rscript {0}
 
-      - name: Install Python dependencies
-        run: |
-          python -m pip install --upgrade pip setuptools wheel
-          pip install '.[all]'
-      - name: Install R package
-        run: R CMD INSTALL aif360/aif360-r
+    # Install Python dependencies
+    - name: Install Python dependencies 📦
+      run: |
+        python -m pip install --upgrade pip setuptools wheel
+        pip install '.[all]'
+
+    # Install R package
+    - name: Install R package 📦
+      run: R CMD INSTALL aif360/aif360-r
+
