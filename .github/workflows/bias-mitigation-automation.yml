@@ -137,11 +137,16 @@ jobs:
       
           # Execute the Jupyter notebook and save the output to a new notebook
           jupyter nbconvert --to notebook --execute ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }} --output ${{ github.workspace }}/automation/${{ github.event.inputs.name }}
+
+      - name: Set up Git identity
+        run: |
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
       
       - name: Check for Local Changes
         run: |
           cd ${{ github.workspace }}/automation
-          git diff --quiet || git commit -am "committing local changes"
+          git diff --quiet || git commit -am "Committing local changes"
       
       - name: commit updated notebook
         uses: EndBug/add-and-commit@v7
@@ -200,7 +205,7 @@ jobs:
         with:
           name: "Audit Report ${{ github.actor }} - ${{ github.run_number }} "
           path: ${{ github.workspace }}/automation/artifacts
-                
+               
   build-r:
     runs-on: ubuntu-latest
 
