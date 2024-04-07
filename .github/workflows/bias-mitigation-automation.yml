@@ -35,6 +35,7 @@ on:
           - "demo_deterministic_reranking.ipynb"
           - "demo_calibrated_eqodds_postprocessing.ipynb"
           - "demo_adversarial_debiasing.ipynb"
+          - "ethaiaudithubDemo.ipynb"
       dataset:
         description: '🗃️ Enter Dataset URL if you need any, except basic datasets'
         required: false
