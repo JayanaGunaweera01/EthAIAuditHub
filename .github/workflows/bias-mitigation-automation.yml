@@ -42,8 +42,7 @@ on:
       algorithm:
         description: '⚙️ Enter Algorithm URL if you need any, except basic algorithms'
         required: false
-  
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+  # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build-py:
     runs-on: ubuntu-latest
@@ -133,84 +132,35 @@ jobs:
         
       - name: Execute Jupyter Notebook
         run: |
-          cd ${{ github.workspace }}/examples
-          pwd
-      
-          # Execute the Jupyter notebook and save the output to a new notebook
-          jupyter nbconvert --to notebook --execute ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }} --output ${{ github.workspace }}/automation/${{ github.event.inputs.name }}
-      
-      - name: Set up Git identity
-        run: |
-          git config --global user.email "you@example.com"
-          git config --global user.name "Your Name"
-      
-      - name: Check for Local Changes
-        run: |
-          cd ${{ github.workspace }}/automation
-          git diff --quiet || git commit -am "Committing local changes"
-      
+           cd ${{ github.workspace }}/examples
+           pwd
+           # Execute the Jupyter notebook and save the output to a new notebook
+           jupyter nbconvert --to notebook --execute ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }} --output ${{ github.workspace }}/automation/${{ github.event.inputs.name }}
       - name: commit updated notebook
         uses: EndBug/add-and-commit@v7
         with:
           author_name: Plot update bot
-          message: "added executed notebook"
+          message: "Added executed notebook"
           add: "${{ github.workspace }}/automation/${{ github.event.inputs.name }}"
-      
-      # Add a new step to commit and push the changes
+        
+        # Add a new step to commit and push the changes
       - name: Commit and Push Changes
         run: |
           git config --local user.name actions-user
           git config --local user.email "actions@github.com"
-      
-      - name: Install TeX Live
-        run: sudo apt-get install -y texlive-xetex
-            
-      - name: Install Pandoc
-        run: sudo apt-get install -y pandoc
-            
-      - name: Convert Execution Log to PDF
+      - name: Persist Logs
         run: |
-          cd ${{ github.workspace }}/automation
-          jupyter nbconvert --to pdf "${{ github.workspace }}/automation/${{ github.event.inputs.name }}" --output "${{ github.workspace }}/automation/${{ github.event.inputs.name }}_log.pdf"
-      - name: Set GH_TOKEN environment variable
-        run: echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
-      
-      - name: Get Run ID
-        id: get_run_id
-        run: |
-          echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
-          echo "::set-output name=run_id::$(gh run list --json | jq -r 'select(.workflowName == "⚖ Bias Mitigation Automation") | .runs[0].id')"
-          echo "Latest Run ID: ${{ steps.get_run_id.outputs.run_id }}"
- 
-      - name: Wait for Run Completion
-        run: |
-          while true; do
-            status=$(gh run view ${{ steps.get_run_id.outputs.run_id }} --json status | jq -r '.status')
-            if [ "$status" != "in_progress" ]; then
-              break
-            fi
-            sleep 10s
-          done
-      
-      - name: Generate Workflow Log PDF
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          cd ${{ github.workspace }}/automation
-          gh run view ${{ steps.get_run_id.outputs.run_id }} --log > workflow_log.txt
-          pandoc workflow_log.txt -o workflow_log.pdf
-      
-      - name: Create Artifacts
-        run: |
-          mkdir -p artifacts
-          mv workflow_log.pdf artifacts/
-        
+          mkdir -p ${{ github.workspace }}/automation/artifacts
+          cp ${{ github.workspace }}/automation/${{ github.event.inputs.name }} ${{ github.workspace }}/automation/artifacts/
+        if: ${{ always() }}
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
+        if: always()
         with:
           name: "Audit Report ${{ github.actor }} - ${{ github.run_number }} "
-          path: ${{ github.workspace }}/automation/artifacts
-               
+          path: ${{ github.workspace }}/automation/artifacts         
+      
   build-r:
     runs-on: ubuntu-latest
 
