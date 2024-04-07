@@ -105,6 +105,13 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+  audit-automation:
+     runs-on: ubuntu-latest
+     steps:
+     
+      - name: Check out repo
+        uses: actions/checkout@v3
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip setuptools wheel
