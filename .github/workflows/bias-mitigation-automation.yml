@@ -171,11 +171,13 @@ jobs:
         run: |
           cd ${{ github.workspace }}/automation
           jupyter nbconvert --to pdf "${{ github.workspace }}/automation/${{ github.event.inputs.name }}" --output "${{ github.workspace }}/automation/${{ github.event.inputs.name }}_log.pdf"
-        
+      - name: Set GH_TOKEN environment variable
+        run: echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+      
       - name: Get Run ID
         id: get_run_id
         run: |
-          echo "::set-env name=GH_TOKEN::${{ secrets.GITHUB_TOKEN }}"
+          echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
           echo "::set-output name=run_id::$(gh run list --json workflow_id=${{ github.event.workflow.id }} | jq -r '.runs[0].id')"
       
       - name: Wait for Run Completion
