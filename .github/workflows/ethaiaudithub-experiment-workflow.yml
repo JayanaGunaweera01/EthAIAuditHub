@@ -110,9 +110,6 @@ jobs:
      needs: build-py
      steps:
      
-      - name: Check out repo
-        uses: actions/checkout@v3
-        
       - name: Echo Inputs
         run: |
           echo -e "\e[1;34mName:\e[0m ${{ github.event.inputs.name }}"
