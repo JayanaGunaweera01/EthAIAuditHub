@@ -101,18 +101,18 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out the repository under $GITHUB_WORKSPACE, so the job can access it
-      - name: Check out repo 📥
+      - name: 📥 Check out repo 
         uses: actions/checkout@v3
     
-      - name: Set up R 📦
+      - name: 📦 Set up R 
         uses: r-lib/actions/setup-r@v2
     
-      - name: Set up Python ${{ matrix.python-version }} 🐍
+      - name: 🐍 Set up Python ${{ matrix.python-version }} 
         uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
     
-      - name: Echo Inputs 📢
+      - name: 📢 Echo Inputs 
         run: |
           echo -e "\e[1;34mName:\e[0m ${{ github.event.inputs.name }}"
           echo -e "\e[1;34mNotebook:\e[0m ${{ github.event.inputs.notebook }}"
@@ -124,7 +124,7 @@ jobs:
           echo -e "\e[1;34mDataset URL:\e[0m ${{ github.event.inputs.dataset }}"
           echo -e "\e[1;34mAlgorithm URL:\e[0m ${{ github.event.inputs.algorithm }}"
     
-      - name: Install dependencies 📦
+      - name: 📦 Install dependencies 
         run: |
           python -m pip install --upgrade pip setuptools wheel
           pip install -e '.[all]'
@@ -132,12 +132,12 @@ jobs:
           pip list
           python -m rpy2.situation
     
-      - name: Download basic datasets 📊
+      - name: 📊 Download basic datasets 
         run: |
           wget ${UCI_DB}/adult/adult.data -P aif360/data/raw/adult/
           # Add more wget commands for other datasets
     
-      - name: Download extra datasets 📊
+      - name: 📊 Download extra datasets 
         run: |
           if [ -n "${{ inputs.dataset }}" ]; then
             wget ${{ inputs.dataset }}
@@ -145,13 +145,13 @@ jobs:
             echo "No dataset URL provided. Skipping download."
           fi
     
-      - name: Unzip or untar the downloaded dataset 📂
+      - name: 📂 Unzip or untar the downloaded dataset 
         if: ${{ inputs.dataset }}
         run: |
           mkdir -p temp_folder
           # Add commands to unzip or untar the dataset files
     
-      - name: Copy CSV files to GitHub workspace 📄
+      - name: 📄 Copy CSV files to GitHub workspace 
         run: |
           if [ -d temp_folder ]; then
             find temp_folder -type f -name "*.csv" -exec cp -r {} ${{ github.workspace }}/examples \;
@@ -160,25 +160,25 @@ jobs:
             echo "Error:No CSV file found."
           fi
     
-      - name: List all the files in directory 📋
+      - name: 📋 List all the files in directory 
         run: ls -a
     
-      - name: Lint with flake8 🧹
+      - name: 🧹 Lint with flake8 
         run: |
           # Add commands for linting with flake8
     
-      - name: Divert to Jupyter notebook directory 📒
+      - name: 📒 Divert to Jupyter notebook directory 
         run: |
           cd ${{ github.workspace }}/examples
           ls -a
     
-      - name: Execute Jupyter Notebook 🚀
+      - name: 🚀 Execute Jupyter Notebook 
         run: |
            cd ${{ github.workspace }}/examples
            pwd
            # Add commands to execute Jupyter notebook
     
-      - name: Commit updated notebook 📝
+      - name: 📝 Commit updated notebook 
         uses: EndBug/add-and-commit@v7
         with:
           author_name: Plot update bot
@@ -186,18 +186,18 @@ jobs:
           add: "${{ github.workspace }}/automation/${{ github.event.inputs.name }}"
       
       # Add a new step to commit and push the changes
-      - name: Commit and Push Changes 🔀
+      - name: 🔀 Commit and Push Changes 
         run: |
           git config --local user.name actions-user
           git config --local user.email "actions@github.com"
     
-      - name: Persist Logs 📂
+      - name: 📂 Persist Logs 
         run: |
           mkdir -p ${{ github.workspace }}/automation/artifacts
           cp ${{ github.workspace }}/automation/${{ github.event.inputs.name }} ${{ github.workspace }}/automation/artifacts/
         if: ${{ always() }}
     
-      - name: Upload Artifacts 📤
+      - name: 📤 Upload Artifacts 
         uses: actions/upload-artifact@v2
         if: always()
         with:
@@ -215,31 +215,31 @@ jobs:
 
    steps:
     # Checkout the repository
-    - name: Check out repo 📥
+    - name: 📥 Check out repo 
       uses: actions/checkout@v3
 
     # Set up R environment
-    - name: Set up R 📦
+    - name: 📦 Set up R 
       uses: r-lib/actions/setup-r@v2
 
     # Set up Python environment
-    - name: Set up Python ${{ matrix.python-version }} 🐍
+    - name: 🐍 Set up Python ${{ matrix.python-version }} 
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
 
     # Install R dependencies
-    - name: Install R dependencies 📦
+    - name: 📦 Install R dependencies 
       run: install.packages(c("reticulate", "rstudioapi", "testthat"))
       shell: Rscript {0}
 
     # Install Python dependencies
-    - name: Install Python dependencies 📦
+    - name: 📦 Install Python dependencies 
       run: |
         python -m pip install --upgrade pip setuptools wheel
         pip install '.[all]'
 
     # Install R package
-    - name: Install R package 📦
+    - name: 📦 Install R package 
       run: R CMD INSTALL aif360/aif360-r
 
