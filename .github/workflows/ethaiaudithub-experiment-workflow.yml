@@ -163,7 +163,8 @@ jobs:
 
            # Replace ipynb file inputs with user inputs
            sed -i "s/Dataset/${{ github.event.inputs.demoDataset }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
-           sed -i "s/Metric/${{ github.event.inputs.demoMetric }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
+           sed -i "s/Metric1/${{ github.event.inputs.demoMetric1 }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
+           sed -i "s/Metric2/${{ github.event.inputs.demoMetric2 }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
            sed -i "s/Algorithm/${{ github.event.inputs.demoAlgorithm }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
            sed -i "s/Path/${{ github.event.inputs.demoAlgoPath }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
     
