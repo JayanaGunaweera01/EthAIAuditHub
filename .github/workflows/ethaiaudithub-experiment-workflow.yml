@@ -10,7 +10,7 @@ on:
         description: "📒 Select the notebook you need to run."
         type: choice
         options:
-          - "ethaiaudithubDemo.ipynb"
+          - "ethaiaudithubTest.ipynb"
           - "ethaiaudithubExtended.ipynb"
       demoMetric1:
         description: '📐 Select Metric1'
