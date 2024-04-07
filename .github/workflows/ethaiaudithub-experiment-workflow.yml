@@ -107,10 +107,23 @@ jobs:
 
   audit-automation:
      runs-on: ubuntu-latest
+     needs: build-py
      steps:
      
       - name: Check out repo
         uses: actions/checkout@v3
+        
+      - name: Echo Inputs
+        run: |
+          echo -e "\e[1;34mName:\e[0m ${{ github.event.inputs.name }}"
+          echo -e "\e[1;34mNotebook:\e[0m ${{ github.event.inputs.notebook }}"
+          echo -e "\e[1;34mDemo Metric 1:\e[0m ${{ github.event.inputs.demoMetric1 }}"
+          echo -e "\e[1;34mDemo Metric 2:\e[0m ${{ github.event.inputs.demoMetric2 }}"
+          echo -e "\e[1;34mDemo Dataset:\e[0m ${{ github.event.inputs.demoDataset }}"
+          echo -e "\e[1;34mDemo Algorithm:\e[0m ${{ github.event.inputs.demoAlgorithm }}"
+          echo -e "\e[1;34mDemo Algorithm Path:\e[0m ${{ github.event.inputs.demoAlgoPath }}"
+          echo -e "\e[1;34mDataset URL:\e[0m ${{ github.event.inputs.dataset }}"
+          echo -e "\e[1;34mAlgorithm URL:\e[0m ${{ github.event.inputs.algorithm }}"
 
       - name: Install dependencies
         run: |
