@@ -194,14 +194,19 @@ jobs:
           git config --local user.name actions-user
           git config --local user.email "actions@github.com"
           
-      - name: 📂 Persist Logs
+      - name: 📂 Persist Logs of notebook execution log file
         run: |
-          # Create artifacts directory
-          mkdir -p ${{ github.workspace }}/automation/artifacts
+              # Create artifacts directory
+              mkdir -p ${{ github.workspace }}/automation/artifacts
 
+              # Copy file to artifacts directory
+              cp ${{ github.workspace }}/examples/ipynb_execution.txt ${{ github.workspace }}/automation/artifacts/
+        if: ${{ always() }}
+          
+      - name: 📂 Persist Logs of executed ipynb file
+        run: |
           # Copy file to artifacts directory
           cp ${{ github.workspace }}/automation/${{ github.event.inputs.name }} ${{ github.workspace }}/automation/artifacts/
-          cp ${{ github.workspace }}/examples/ipynb_execution.txt ${{ github.workspace }}/automation/artifacts/
         if: ${{ always() }}
 
       - name: 📤 Upload Artifacts
