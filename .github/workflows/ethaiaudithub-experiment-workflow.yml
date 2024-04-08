@@ -192,15 +192,32 @@ jobs:
     
       - name: 🚀 Execute Jupyter Notebook 
         run: |
+           # Navigate to examples directory
            cd ${{ github.workspace }}/examples
+           
+           # Get path
            pwd
-           # Add commands to execute Jupyter notebook
+           
+           # Create an empty file for capturing the stack trace
+           touch ipynb_execution.txt
+
+           # Give write access to .txt
+           chmod +x ipynb_execution.txt
+           
+           # Execute the Jupyter notebook and save the output to a new notebook
+           jupyter nbconvert --to notebook --execute ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }} --output ${{ github.workspace }}/automation/${{ github.event.inputs.name }} > ipynb_execution.txt 2>&1 || true
+           
+      - name:  📄 Log ipynb execution stack trace
+        uses: actions/upload-artifact@v2
+        with:
+          name: ipynb-execution-stack-trace
+          path: ipynb_execution.txt   
     
       - name: 📝 Commit updated notebook 
         uses: EndBug/add-and-commit@v7
         with:
           author_name: Plot update bot
-          message: "Added executed notebook"
+          message: "add: executed notebook"
           add: "${{ github.workspace }}/automation/${{ github.event.inputs.name }}"
       
       # Add a new step to commit and push the changes
@@ -213,6 +230,7 @@ jobs:
         run: |
           mkdir -p ${{ github.workspace }}/automation/artifacts
           cp ${{ github.workspace }}/automation/${{ github.event.inputs.name }} ${{ github.workspace }}/automation/artifacts/
+          cp ${{ github.workspace }}/examples/ipynb_execution.txt ${{ github.workspace }}/automation/artifacts/
         if: ${{ always() }}
     
       - name: 📤 Upload Artifacts 
