@@ -63,6 +63,24 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: 📥 Check out repo
         uses: actions/checkout@v3
+    
+      # Cache R packages
+      - name: 💰 Cache R packages 
+        uses: actions/cache@v2
+        with:
+          path: ~/.local/lib/R/site-library
+          key: ${{ runner.os }}-R-${{ hashFiles('**/DESCRIPTION') }}
+          restore-keys: |
+            ${{ runner.os }}-R-
+
+      # Cache Python packages
+      - name: 💵 Cache Python packages 
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
       - name: 📦 Set up R
         uses: r-lib/actions/setup-r@v2
