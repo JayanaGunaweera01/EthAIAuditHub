@@ -185,7 +185,7 @@ jobs:
         uses: EndBug/add-and-commit@v7
         with:
           author_name: Plot update bot
-          message: "Added executed notebook"
+          message: "add: executed notebook"
           add: "${{ github.workspace }}/automation/${{ github.event.inputs.name }}"
         
         # Add a new step to commit and push the changes
