@@ -167,11 +167,17 @@ jobs:
            pwd
            
            # Create an empty file for capturing the stack trace
-           touch jupyter_execution_error.txt
+           touch ipynb_execution.txt
            
            # Execute the Jupyter notebook and save the output to a new notebook
            jupyter nbconvert --to notebook --execute ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }} --output ${{ github.workspace }}/automation/${{ github.event.inputs.name }} 2> ipynb_execution.txt
       
+      - name:  📄 Log ipynb execution stack trace
+        uses: actions/upload-artifact@v2
+        with:
+          name: ipynb-execution-stack-trace
+          path: ipynb_execution.txt
+
       - name: 📝 commit updated notebook
         uses: EndBug/add-and-commit@v7
         with:
@@ -193,12 +199,6 @@ jobs:
           # Copy file to artifacts directory
           cp ${{ github.workspace }}/automation/${{ github.event.inputs.name }} ${{ github.workspace }}/automation/artifacts/
         if: ${{ always() }}
-
-      - name:  📄 Log ipynb execution stack trace
-        uses: actions/upload-artifact@v2
-        with:
-          name: ipynb-execution-stack-trace
-          path: ipynb_execution.txt
 
       - name: 📤 Upload Artifacts
         uses: actions/upload-artifact@v2
