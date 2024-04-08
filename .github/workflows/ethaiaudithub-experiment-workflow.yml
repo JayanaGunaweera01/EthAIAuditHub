@@ -203,6 +203,16 @@ jobs:
 
            # Give write access to .txt
            chmod +x ipynb_execution.txt
+
+           # Give read write permissions to edit ipynb file
+           chmod +x ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
+           
+           # Replace ipynb file inputs with user inputs
+           sed -i "s/Dataset/${{ github.event.inputs.demoDataset }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
+           sed -i "s/Metric1/${{ github.event.inputs.demoMetric1 }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
+           sed -i "s/Metric2/${{ github.event.inputs.demoMetric2 }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
+           sed -i "s/Algorithm/${{ github.event.inputs.demoAlgorithm }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
+           sed -i "s/Path/${{ github.event.inputs.demoAlgoPath }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
            
            # Execute the Jupyter notebook and save the output to a new notebook
            jupyter nbconvert --to notebook --execute ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }} --output ${{ github.workspace }}/automation/${{ github.event.inputs.name }} 2>&1 | tee -a ipynb_execution.txt
