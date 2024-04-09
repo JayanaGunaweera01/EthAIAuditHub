@@ -8,16 +8,18 @@ on:
         required: true
       notebook:
         description: "📒 Select the notebook you need to run."
-        default: ""
+        default: "Choose a Notebook"
         type: choice
         options:
+          - "Choose a Notebook"
           - "ethaiaudithubTest.ipynb"
           - "ethaiaudithubExtended.ipynb"
       demoMetric1:
         description: '📐 Select Metric1'
-        default: ""
+        default: "Choose Metric1"
         type: choice
         options:
+          - "Choose Metric1"
           - "DatasetMetric"
           - "BinaryLabelDatasetMetric"
           - "ClassificationMetric"
@@ -25,9 +27,10 @@ on:
           - "MDSSClassificationMetric"
       demoMetric2:
         description: '📐 Select if you need to test with a second metric'
-        default: ""
+        default: "Choose Metric2"
         type: choice
         options:
+          - "Choose Metric2"
           - "DatasetMetric"
           - "BinaryLabelDatasetMetric"
           - "ClassificationMetric"
@@ -35,9 +38,10 @@ on:
           - "MDSSClassificationMetric"
       demoDataset:
         description: '📊 Select Dataset'
-        default: ""
+        default: "Choose Dataset"
         type: choice
         options:
+          - "Choose Dataset"
           - "AdultDataset"
           - "BankDataset"
           - "CompasDataset"
@@ -48,9 +52,10 @@ on:
           - "MEPSDataset21"
       demoAlgorithm:
         description: '💡 Select Algorithm (preprocessing/inprocessing/postprocessing)'
-        default: ""
+        default: "Choose Algorithm"
         type: choice
         options:
+          - "Choose Algorithm"
           - "Reweighing"
           - "DisparateImpactRemover"
           - "LFR"
@@ -221,16 +226,18 @@ jobs:
            
            # Create an empty file for capturing the stack trace
            touch ipynb_execution.txt
+           echo "Created file to save error logs"
 
            # Give write access to .txt
            chmod +x ipynb_execution.txt
+           echo "Write access was given to ipynb_execution.txt"
           
            jupyter nbconvert --to notebook --execute ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }} --output ${{ github.workspace }}/automation/${{ github.event.inputs.name }} 2>&1 | tee -a ipynb_execution.txt || { echo "error: failed to execute Jupyter notebook. Please see log files to stacktrace."; exit 1; }
            if [ -n "${{ github.event.inputs.notebook }}" ]; then
            
               # Give read write permissions to edit ipynb file
               chmod +x ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
-              echo "Read write access granted."
+              echo "Read write access granted to ipynb file."
                
               # Replace ipynb file inputs with user inputs
               sed -i "s/Dataset/${{ github.event.inputs.demoDataset }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
@@ -244,7 +251,7 @@ jobs:
               jupyter nbconvert --to notebook --execute ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }} --output ${{ github.workspace }}/automation/${{ github.event.inputs.name }} 2>&1 | tee -a ipynb_execution.txt || { echo "error: failed to execute Jupyter notebook. Please see log files to see the stacktrace."; exit 1; }
             else
               echo "No specific notebook selected. Trying to download an external notebook..."
-              if [ -n "${{ inputs.dataset }}" ]; then
+              if [ -n "${{ inputs.externalNotebook }}" ]; then
                 wget ${{ inputs.externalNotebook }}
                 echo "External notebook was downloaded to the workflow"
                 
