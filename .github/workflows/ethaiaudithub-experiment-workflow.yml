@@ -177,7 +177,13 @@ jobs:
         if: ${{ inputs.dataset }}
         run: |
           mkdir -p temp_folder
-          # Add commands to unzip or untar the dataset files
+          if [ -f *.zip ]; then
+            unzip *.zip -d temp_folder
+          elif [ -f *.tar.gz ]; then
+            tar -xzvf *.tar.gz -C temp_folder
+          else
+            echo "No zip or tar.gz file found. Skipping extraction."
+          fi
     
       - name: 📄 Copy CSV files to GitHub workspace 
         run: |
@@ -194,6 +200,27 @@ jobs:
             wget ${{ inputs.externalNotebook }}
           else
             echo "No external notebook URL provided. Skipping download."
+          fi
+          
+      - name: 📂 Unzip or untar the downloaded external notebook
+        if: ${{ inputs.dataset }}
+        run: |
+          mkdir -p temp_folder2
+          if [ -f *.zip ]; then
+            unzip *.zip -d temp_folder2
+          elif [ -f *.tar.gz ]; then
+            tar -xzvf *.tar.gz -C temp_folder2
+          else
+            echo "No zip or tar.gz file found. Skipping extraction."
+          fi
+    
+      - name: 📄 Copy ipynb files to GitHub workspace 
+        run: |
+          if [ -d temp_folder2 ]; then
+            find temp_folder2 -type f -name "*.ipynb" -exec cp -r {} ${{ github.workspace }}/examples \;
+            rm -rf temp_folder2
+          else
+            echo "Error:No externl ipynb file found."
           fi
           
       - name: ⚙️ Download External Algorithm 
