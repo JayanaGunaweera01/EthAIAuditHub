@@ -36,9 +36,7 @@ on:
           - "demo_calibrated_eqodds_postprocessing.ipynb"
           - "demo_adversarial_debiasing.ipynb"
           - "ethaiaudithubDemo.ipynb"
-      dataset:
-        description: '🗃️ Enter Dataset URL if you need any, except basic datasets'
-        required: false
+     
   # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build-py:
@@ -89,9 +87,7 @@ jobs:
       - name: 📢 Echo Inputs 
         run: |
           echo -e "\e[1;34mNotebook Name:\e[0m ${{ github.event.inputs.name }}"
-          echo -e "\e[1;34mExecuting Notebook:\e[0m ${{ github.event.inputs.notebook }}"
-          echo -e "\e[1;34mDataset URL:\e[0m ${{ github.event.inputs.dataset }}"
-          echo -e "\e[1;34mAlgorithm URL:\e[0m ${{ github.event.inputs.algorithm }}"      
+          echo -e "\e[1;34mExecuting Notebook:\e[0m ${{ github.event.inputs.notebook }}"   
 
       - name: 📦 Install dependencies
         run: |
@@ -111,38 +107,7 @@ jobs:
           wget ${PROPUBLICA_GH}/compas-scores-two-years.csv -P aif360/data/raw/compas/
           wget ${UCI_DB}/00222/bank-additional.zip -P aif360/data/raw/bank/ && unzip -j aif360/data/raw/bank/bank-additional.zip -d aif360/data/raw/bank/ && rm aif360/data/raw/bank/bank-additional.zip
           (cd aif360/data/raw/meps;Rscript generate_data.R <<< y)
-          
-      - name: 📊 Download extra datasets
-        run: |
-          if [ -n "${{ inputs.dataset }}" ]; then
-            wget ${{ inputs.dataset }}
-          else
-            echo "No dataset URL provided. Skipping download."
-          fi
-          
-      - name: 📂 Unzip or untar the downloaded dataset
-        if: ${{ inputs.dataset }}
-        run: |
-          mkdir -p temp_folder
-          if [ -f *.zip ]; then
-            unzip *.zip -d temp_folder
-          elif [ -f *.tar.gz ]; then
-            tar -xzvf *.tar.gz -C temp_folder
-          else
-            echo "No zip or tar.gz file found. Skipping extraction."
-          fi
-      
-      - name: 📄 Copy CSV files to github workspace
-        run: |
-              if [ -d temp_folder ]; then
-                find temp_folder -type f -name "*.csv" -exec cp -r {} ${{ github.workspace }}/examples \;
-                rm -rf temp_folder
-              else
-                echo "Error:No CSV file found."
-              fi
-      - name: 📋 List all the files in directory
-        run: ls -a
-
+        
       - name: 🧹Lint with flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names
