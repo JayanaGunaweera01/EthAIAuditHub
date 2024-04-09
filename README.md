@@ -32,18 +32,6 @@ Experience a better UX with automatically executed log reports
 
 ### Getting started
 
-1. Clone the repository:
-
-    ```bash
-    click [here](https://web-app-delta-wheat.vercel.app/)
-    ```
-
-
-
-
-
-## Reporting and Communication
-Develop clear and concise reports summarizing audit findings. Establish communication channels to disseminate audit results to relevant stakeholders.
-
-Feel free to contribute, provide feedback, or raise issues as we work towards responsible and ethical AI practices.
+visit: https://web-app-delta-wheat.vercel.app/
+   
 
