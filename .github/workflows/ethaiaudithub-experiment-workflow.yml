@@ -193,36 +193,7 @@ jobs:
           else
             echo "Error:No CSV file found."
           fi
-          
-      - name: 📗 Download External Notebook 
-        run: |
-          if [ -n "${{ inputs.externalNotebook }}" ]; then
-            wget ${{ inputs.externalNotebook }}
-          else
-            echo "No external notebook URL provided. Skipping download."
-          fi
-          
-      - name: 📂 Unzip or untar the downloaded external notebook
-        if: ${{ inputs.dataset }}
-        run: |
-          mkdir -p temp_folder2
-          if [ -f *.zip ]; then
-            unzip *.zip -d temp_folder2
-          elif [ -f *.tar.gz ]; then
-            tar -xzvf *.tar.gz -C temp_folder2
-          else
-            echo "No zip or tar.gz file found. Skipping extraction."
-          fi
-    
-      - name: 📄 Copy ipynb files to GitHub workspace 
-        run: |
-          if [ -d temp_folder2 ]; then
-            find temp_folder2 -type f -name "*.ipynb" -exec cp -r {} ${{ github.workspace }}/examples \;
-            rm -rf temp_folder2
-          else
-            echo "Error:No externl ipynb file found."
-          fi
-          
+      
       - name: ⚙️ Download External Algorithm 
         run: |
           if [ -n "${{ inputs.algorithm }}" ]; then
@@ -230,7 +201,28 @@ jobs:
           else
             echo "No external algorithm URL provided. Skipping download."
           fi
+          
+      - name: 📂 Unzip or untar the downloaded external algorithm
+        if: ${{ inputs.algorithm }}
+        run: |
+          mkdir -p temp_folder1
+          if [ -f *.zip ]; then
+            unzip *.zip -d temp_folder1
+          elif [ -f *.tar.gz ]; then
+            tar -xzvf *.tar.gz -C temp_folder1
+          else
+            echo "No zip or tar.gz file found. Skipping extraction."
+          fi
     
+      - name: 📄 Copy .py files containing algorithm to GitHub workspace 
+        run: |
+          if [ -d temp_folder1 ]; then
+            find temp_folder1 -type f -name "*.py" -exec cp -r {} ${{ github.workspace }}/examples \;
+            rm -rf temp_folder1
+          else
+            echo "Error:No external python file found."
+          fi
+            
       - name: 📋 List all the files in directory 
         run: ls -a
     
@@ -279,11 +271,29 @@ jobs:
             if [ -n "${{ inputs.externalNotebook }}" ]; then
                 wget ${{ inputs.externalNotebook }}
                 echo "External notebook was downloaded to the workflow"
-                
-                # Execute the downloaded notebook
-                jupyter nbconvert --to notebook --execute ${{ github.event.inputs.externalNotebook }} --output ${{ github.workspace }}/automation/${{ github.event.inputs.name }} 2>&1 | tee -a ipynb_execution.txt || { echo "error: failed to execute Jupyter notebook. Please see log files to see the stacktrace."; exit 1; }
+                            
+                mkdir -p temp_folder2
+                if [ -f *.zip ]; then
+                    unzip *.zip -d temp_folder2
+                elif [ -f *.tar.gz ]; then
+                    tar -xzvf *.tar.gz -C temp_folder2
+                else
+                    echo "No zip or tar.gz file found. Skipping extraction."
+                fi
+            
+                if [ -d temp_folder2 ]; then
+                    # Find the extracted notebook and rename it
+                    find temp_folder2 -type f -name "*.ipynb" -exec cp -r {} ${{ github.workspace }}/automation/externalNotebook.ipynb \;
+                    rm -rf temp_folder2
+                    echo "External notebook file renamed to externalNotebook.ipynb"
+                            
+                    # Execute the renamed notebook
+                    jupyter nbconvert --to notebook --execute ${{ github.workspace }}/automation/externalNotebook.ipynb --output ${{ github.workspace }}/automation/${{ github.event.inputs.name }} 2>&1 | tee -a ipynb_execution.txt || { echo "error: failed to execute Jupyter notebook. Please see log files to see the stacktrace."; exit 1; }
+                else
+                    echo "Error: No external ipynb file found."
+                fi   
             else
-                echo "No external notebook URL provided. Skipping download."
+                echo "No external notebook URL provided or check URL again. Skipping download."
             fi
            fi
 
