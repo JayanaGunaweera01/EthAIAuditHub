@@ -39,9 +39,6 @@ on:
       dataset:
         description: '🗃️ Enter Dataset URL if you need any, except basic datasets'
         required: false
-      algorithm:
-        description: '⚙️ Enter Algorithm URL if you need any, except basic algorithms'
-        required: false
   # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build-py:
