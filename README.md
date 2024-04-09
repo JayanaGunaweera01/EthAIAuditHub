@@ -1,43 +1,50 @@
-# Automated Auditing Framework for AI Systems
+# EthAIAuditHub -  An automated, collaborative bias auditing platform for ML models
+Welcome to EthAIAuditHub - An Automated, Collaborative, ethical Bias Auditing Platform for ML models! This platform is designed to help ethically biased communities,developers, data scientists, policy makers and all the relavant stakeholders to assess and mitigate biases in machine learning models effectively. By leveraging cutting-edge technologies and methodologies, this platform aims to uphold integrity, fairness and inclusivity in AI systems.
+
+## Workflow Status
+
+[![Workflow Status](https://github.com/JayanaGunaweera01/webApp/actions/workflows/.github/workflows/docker-image.yml/badge.svg)](https://github.com/JayanaGunaweera01/webApp/actions)
+
+[![CodeQL](https://github.com/JayanaGunaweera01/research/actions/workflows/codeql.yml/badge.svg?branch=main&event=push)](https://github.com/JayanaGunaweera01/research/actions/workflows/codeql.yml)
+
+[![Workflow Status](https://github.com/JayanaGunaweera01/EthAIAuditHub/actions/workflows/.github/workflows/bias-mitigation-automation.yml/badge.svg)](https://github.com/JayanaGunaweera01/EthAIAuditHub/actions)
+
+[![Workflow Status](https://github.com/JayanaGunaweera01/EthAIAuditHub/actions/workflows/.github/workflows/ethaiaudithub-experiment-workflow.yml/badge.svg)](https://github.com/JayanaGunaweera01/EthAIAuditHub/actions)
+
+![Vercel](http://web-app-delta-wheat.vercel.app/?app=web-app-delta-wheat-vercel-badge) 
+
+![License](https://img.shields.io/badge/license-MIT-blue)
+
 
 ## Objective
-This repository contains a comprehensive Automated Auditing Framework for AI systems, designed to ensure transparency, fairness, and accountability in the development and deployment of AI models.
+This repository contains a comprehensive Automated Auditing Framework for AI systems, designed to ensure transparency, fairness, and accountability in the development and deployment of ML models. By developing a meaningful automated platform with an AI assistant for addressing biases in algorithmic models, the developer aims at mitigating ethical bias which are not just technical glitches; but are societal challenges that necessitate collective attention and thoughtful solutions. 
 
 ## Stakeholder Involvement
-Engage with key stakeholders, including developers, data scientists, legal experts, and end-users. Maintain open communication channels to gather feedback and ensure a collaborative approach.
+Engage with key stakeholders, including developers, data scientists, legal experts, and end-users. Maintain open communication channels to gather feedback and ensure a collaborative approach.File sharing, discussion forums, communities and real-time collaboration tools promote inclusivity and diverse contributions.
 
-## Legal and Ethical Compliance
-Align the framework with relevant legal and ethical standards, emphasizing principles such as fairness, transparency, and accountability.
+## Collaboration with IBM AIF 360
+Utilization of IBM AIF 360, a framework with the highest accuracy in bias detection.Align the framework with relevant legal and ethical standards, emphasizing principles such as fairness, transparency, and accountability.
 
-## Data Governance
-Implement robust data governance practices to ensure the quality, privacy, and responsible use of training data.
+## Automated ML model execution platform
+Execute Bias Mitigation Automation Workflow and EthAIAuditHub Experiment Workflow to have an automated experience in executing ipynb files leveraging github actions
 
-## Algorithmic Transparency
-Incorporate mechanisms to make AI algorithms transparent and interpretable. Provide explanations for AI decision-making processes.
+## Chat with AI Assistant and do an audit with your ML model executions
+Use in built AI assistance which is a  GPT based  platform that can streamline the process of bias detection, auditing your ipynb files and fixing bugs in executing ML models.
 
-## Monitoring and Performance
-Set up continuous monitoring for model performance, including accuracy, precision, and recall. Establish thresholds and triggers for deviations from acceptable performance.
+## Log reports
+Experience a better UX with automatically executed log reports
 
-## Bias Detection and Mitigation
-Integrate tools for detecting and mitigating bias in AI models. Regularly assess and address biases that may emerge during model updates.
+### Getting started
 
-## Security Audits
-Conduct regular security audits to identify vulnerabilities and implement measures to protect against adversarial attacks and data breaches.
+1. Clone the repository:
 
-## Documentation and Traceability
-Maintain comprehensive documentation of AI system components and configurations. Establish traceability for model training data, parameters, and versions.
+    ```bash
+    click [here](https://web-app-delta-wheat.vercel.app/)
+    ```
 
-## Regular Auditing Schedule
-Define a regular schedule for automated audits, prioritizing assessments after significant updates or changes to the AI system.
 
-## Incident Response Plan
-Develop an incident response plan to address issues identified during audits. Include procedures for communication with stakeholders in case of critical incidents.
 
-## Training and Awareness
-Conduct training programs to enhance awareness among stakeholders about compliance, ethics, and responsible AI use.
 
-## Continuous Improvement
-Regularly review and update the auditing framework to incorporate advancements in AI and emerging ethical standards.
 
 ## Reporting and Communication
 Develop clear and concise reports summarizing audit findings. Establish communication channels to disseminate audit results to relevant stakeholders.
