@@ -8,13 +8,14 @@ on:
         required: true
       notebook:
         description: "📒 Select the notebook you need to run."
+        default: ""
         type: choice
         options:
           - "ethaiaudithubTest.ipynb"
           - "ethaiaudithubExtended.ipynb"
       demoMetric1:
         description: '📐 Select Metric1'
-        default: "BinaryLabelDatasetMetric"
+        default: ""
         type: choice
         options:
           - "DatasetMetric"
@@ -24,7 +25,7 @@ on:
           - "MDSSClassificationMetric"
       demoMetric2:
         description: '📐 Select if you need to test with a second metric'
-        default: "ClassificationMetric"
+        default: ""
         type: choice
         options:
           - "DatasetMetric"
@@ -34,7 +35,7 @@ on:
           - "MDSSClassificationMetric"
       demoDataset:
         description: '📊 Select Dataset'
-        default: "GermanDataset"
+        default: ""
         type: choice
         options:
           - "AdultDataset"
@@ -47,7 +48,7 @@ on:
           - "MEPSDataset21"
       demoAlgorithm:
         description: '💡 Select Algorithm (preprocessing/inprocessing/postprocessing)'
-        default: "Reweighing"
+        default: ""
         type: choice
         options:
           - "Reweighing"
@@ -73,6 +74,9 @@ on:
         required: false
       algorithm:
         description: '⚙️ Enter Algorithm URL if you need any, except basic algorithms'
+        required: false
+      externalNotebook:
+        description: '🗃️ Enter the URL if you need to execute any external notebook'
         required: false
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -141,6 +145,7 @@ jobs:
           echo -e "\e[1;34mDemo Algorithm Path:\e[0m ${{ github.event.inputs.demoAlgoPath }}"
           echo -e "\e[1;34mDataset URL:\e[0m ${{ github.event.inputs.dataset }}"
           echo -e "\e[1;34mAlgorithm URL:\e[0m ${{ github.event.inputs.algorithm }}"
+          echo -e "\e[1;34mExternal Notebook URL:\e[0m ${{ github.event.inputs.externalNotebook }}"
     
       - name: 📦 Install dependencies 
         run: |
@@ -155,7 +160,7 @@ jobs:
           wget ${UCI_DB}/adult/adult.data -P aif360/data/raw/adult/
           # Add more wget commands for other datasets
     
-      - name: 📊 Download extra datasets 
+      - name: 📊 Download extra dataset 
         run: |
           if [ -n "${{ inputs.dataset }}" ]; then
             wget ${{ inputs.dataset }}
@@ -176,6 +181,22 @@ jobs:
             rm -rf temp_folder
           else
             echo "Error:No CSV file found."
+          fi
+          
+      - name: 📗 Download External Notebook 
+        run: |
+          if [ -n "${{ inputs.externalNotebook }}" ]; then
+            wget ${{ inputs.externalNotebook }}
+          else
+            echo "No external notebook URL provided. Skipping download."
+          fi
+          
+      - name: ⚙️ Download External Algorithm 
+        run: |
+          if [ -n "${{ inputs.algorithm }}" ]; then
+            wget ${{ inputs.algorithm }}
+          else
+            echo "No external algorithm URL provided. Skipping download."
           fi
     
       - name: 📋 List all the files in directory 
@@ -203,20 +224,36 @@ jobs:
 
            # Give write access to .txt
            chmod +x ipynb_execution.txt
-
-           # Give read write permissions to edit ipynb file
-           chmod +x ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
-           
-           # Replace ipynb file inputs with user inputs
-           sed -i "s/Dataset/${{ github.event.inputs.demoDataset }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
-           sed -i "s/Metric1/${{ github.event.inputs.demoMetric1 }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
-           sed -i "s/Metric2/${{ github.event.inputs.demoMetric2 }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
-           sed -i "s/Algorithm/${{ github.event.inputs.demoAlgorithm }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
-           sed -i "s/Path/${{ github.event.inputs.demoAlgoPath }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
-           
-           # Execute the Jupyter notebook and save the output to a new notebook
+          
            jupyter nbconvert --to notebook --execute ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }} --output ${{ github.workspace }}/automation/${{ github.event.inputs.name }} 2>&1 | tee -a ipynb_execution.txt || { echo "error: failed to execute Jupyter notebook. Please see log files to stacktrace."; exit 1; }
+           if [ -n "${{ github.event.inputs.notebook }}" ]; then
            
+              # Give read write permissions to edit ipynb file
+              chmod +x ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
+              echo "Read write access granted."
+               
+              # Replace ipynb file inputs with user inputs
+              sed -i "s/Dataset/${{ github.event.inputs.demoDataset }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
+              sed -i "s/Metric1/${{ github.event.inputs.demoMetric1 }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
+              sed -i "s/Metric2/${{ github.event.inputs.demoMetric2 }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
+              sed -i "s/Algorithm/${{ github.event.inputs.demoAlgorithm }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
+              sed -i "s/Path/${{ github.event.inputs.demoAlgoPath }}/g" ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }}
+              echo "Modified notebook according to user inputs"
+              
+              # Execute the Jupyter notebook and save the output to a new notebook
+              jupyter nbconvert --to notebook --execute ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }} --output ${{ github.workspace }}/automation/${{ github.event.inputs.name }} 2>&1 | tee -a ipynb_execution.txt || { echo "error: failed to execute Jupyter notebook. Please see log files to see the stacktrace."; exit 1; }
+            else
+              echo "No specific notebook selected. Trying to download an external notebook..."
+              if [ -n "${{ inputs.dataset }}" ]; then
+                wget ${{ inputs.externalNotebook }}
+                echo "External notebook was downloaded to the workflow"
+                
+                # Execute the downloaded notebook
+                jupyter nbconvert --to notebook --execute ${{ github.event.inputs.notebook }} --output ${{ github.workspace }}/automation/${{ github.event.inputs.name }} 2>&1 | tee -a ipynb_execution.txt || { echo "error: failed to execute Jupyter notebook. Please see log files to see the stacktrace."; exit 1; }
+              else
+                echo "No external notebook URL provided. Skipping download."
+              fi
+            fi
       - name:  📄 Log ipynb execution stack trace
         uses: actions/upload-artifact@v2
         with:
