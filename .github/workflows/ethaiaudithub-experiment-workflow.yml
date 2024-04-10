@@ -163,7 +163,13 @@ jobs:
       - name: 📊 Download basic datasets 
         run: |
           wget ${UCI_DB}/adult/adult.data -P aif360/data/raw/adult/
-          # Add more wget commands for other datasets
+          wget ${UCI_DB}/adult/adult.test -P aif360/data/raw/adult/
+          wget ${UCI_DB}/adult/adult.names -P aif360/data/raw/adult/
+          wget ${UCI_DB}/statlog/german/german.data -P aif360/data/raw/german/
+          wget ${UCI_DB}/statlog/german/german.doc -P aif360/data/raw/german/
+          wget ${PROPUBLICA_GH}/compas-scores-two-years.csv -P aif360/data/raw/compas/
+          wget ${UCI_DB}/00222/bank-additional.zip -P aif360/data/raw/bank/ && unzip -j aif360/data/raw/bank/bank-additional.zip -d aif360/data/raw/bank/ && rm aif360/data/raw/bank/bank-additional.zip
+          (cd aif360/data/raw/meps;Rscript generate_data.R <<< y)
     
       - name: 📊 Download extra dataset 
         run: |
