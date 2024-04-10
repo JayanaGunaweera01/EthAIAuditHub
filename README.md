@@ -1,5 +1,5 @@
 # EthAIAuditHub -  An automated, collaborative bias auditing platform for ML models
-Welcome to EthAIAuditHub - An Automated, Collaborative, ethical Bias Auditing Platform for ML models! This platform is designed to help ethically biased communities,developers, data scientists, policy makers and all the relavant stakeholders to assess and mitigate biases in machine learning models effectively. By leveraging cutting-edge technologies and methodologies, this platform aims to uphold integrity, fairness and inclusivity in AI systems.
+Welcome to EthAIAuditHub - An Automated, Collaborative, ethical Bias Auditing Platform for ML models.This platform is designed to help ethically biased communities,developers, data scientists, policy makers and all the relavant stakeholders to assess and mitigate algorithmic biases in machine learning models effectively. By leveraging cutting-edge technologies and methodologies, this platform aims to uphold integrity, fairness in ML models which then automatically eliminate the ethical bias.
 
 ## Workflow Status
 
