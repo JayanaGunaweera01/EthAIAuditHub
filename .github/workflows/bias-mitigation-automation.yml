@@ -138,7 +138,7 @@ jobs:
            jupyter nbconvert --to notebook --execute ${{ github.workspace }}/examples/${{ github.event.inputs.notebook }} --output ${{ github.workspace }}/automation/${{ github.event.inputs.name }} 2>&1 | tee -a ipynb_execution.txt || { echo "error: failed to execute Jupyter notebook. Please see log files to see the stacktrace."; exit 1; }
       
       - name:  📄 Log ipynb execution stack trace
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: ipynb-execution-stack-trace
           path: ipynb_execution.txt
@@ -172,7 +172,7 @@ jobs:
         if: ${{ always() }}
 
       - name: 📤 Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: "Audit Report ${{ github.actor }} - ${{ github.run_number }} "
