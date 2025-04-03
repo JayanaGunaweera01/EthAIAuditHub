@@ -63,7 +63,7 @@ jobs:
 
         # Cache R packages
       - name: 💰 Cache R packages 
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ~/.local/lib/R/site-library
           key: ${{ runner.os }}-R-${{ hashFiles('**/DESCRIPTION') }}
@@ -77,7 +77,7 @@ jobs:
 
       # Cache Python packages
       - name: 💵 Cache Python packages 
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
