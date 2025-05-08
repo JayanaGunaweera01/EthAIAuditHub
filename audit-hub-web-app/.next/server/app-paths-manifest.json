@@ -1,0 +1,10 @@
+{
+  "/(root)/page": "app/(root)/page.js",
+  "/api/uploadthing/route": "app/api/uploadthing/route.js",
+  "/(root)/activity/page": "app/(root)/activity/page.js",
+  "/(root)/search/page": "app/(root)/search/page.js",
+  "/(root)/communities/page": "app/(root)/communities/page.js",
+  "/(root)/create-audit/page": "app/(root)/create-audit/page.js",
+  "/(root)/profile/[id]/page": "app/(root)/profile/[id]/page.js",
+  "/(root)/profile/edit/page": "app/(root)/profile/edit/page.js"
+}
